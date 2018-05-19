@@ -1,0 +1,34 @@
+label{
+	font-family: "Roboto";
+	color: lightseagreen;
+	font-size: 20px;
+}
+
+.form-div {
+	margin-top: 5%;
+}
+
+.form{
+	font-family: 'Roboto';
+	font-size:20px;
+	padding-bottom: 3%;
+	text-align: center;
+	margin-top: 10%;
+	border: solid 3px lightseagreen;
+	border-radius: 2%;
+	width:30%;
+	margin-left: 35%;
+}
+
+
+@media screen and (max-width: 720px) {
+  .form{
+  	border:none;
+  	border-bottom:solid 2px lightseagreen;
+  	border-top:solid 2px lightseagreen;
+  	border-radius:0%;
+  }
+  .inputs{
+  	width:100%;
+  }
+} 

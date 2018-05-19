@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proyecto</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href= {{ asset("css/style.css") }}>
+    <link rel="stylesheet" type="text/css" href={{ asset("css/logIn.css") }}>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    {%block head%}
+    {%endblock%}
+</head>
+<body style="padding-top: 60px;">
+<header>
+
+{% set user= app.user %}
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light fixed-top" style="background-color: lightseagreen;">
+    <div class="container-fluid">
+  <i class="fa fa-plus-circle fa-2x" style="color:lightseagreen;"></i>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="padding: 0;">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav mr-auto">
+        {% if (user is not null) and 
+              (not user.roles is empty) %}
+            {% if is_granted('ROLE_Administrador')%}
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Administracion
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{{path('users_index')}}">Usuarios</a>
+              <a class="dropdown-item" href="#">Roles</a>
+              <a class="dropdown-item" href="#">Permisos</a>
+              <a class="dropdown-item" href="{{path('configuration_index')}}">Configuracion</a>
+            </div>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('patients_index') }}">Pacientes</a>
+          </li>
+        {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('infoHospital') }}">Sobre el hospital</a>
+          </li>
+        </ul>
+
+
+    <ul class="navbar-nav">
+        {% if inicio and (user is null) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('login') }}">Log in</a>
+                </li>
+        {% endif %}
+        {% if user %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('logout') }}">Cerrar sesion</a>
+            </li>
+        {% endif%}
+        {% if not inicio %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('home_index') }}">Inicio</a>
+            </li>
+        {% endif %}
+
+    </ul>
+  </div>
+</div>
+</nav>
+</header>
+
+<!-- Aca comienza el contenido de la pagina -->
+{% block section %}
+{% endblock %}
+<!-- Aca termina el contenido de la pagina -->
+ <footer class="footer bg-dark fixed-bottom" style="padding-top:10px;" >
+      <div class="container">
+        <p class="" style="color:lightseagreen;">Proyecto 2017 - Grupo 13 - V 2.0</p>
+      </div>
+ </footer>
+</body>
+
+
+
+</html>

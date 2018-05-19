@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+<div class="container" style="margin-top:5%;">
+	<h1 style="text-align:center">Modulo de usuarios</h1>
+	<div class="options">
+		<a href="{{path('users_add')}}" class="btn btn-success">Agregar usuario</a>
+	</div>
+	<form class="form-group align-self-center form-inline" style="margin-top:5%; margin-left:23%;" action="{{path('users_index')}}" method="GET">
+		<span style="font-size:19px; margin-left:5%">Filtrar por:</span>
+		<select name="activo">
+			<option value="1" {% if activo %} selected {% endif %}>Activo</option>
+			<option value="0" {% if not activo %} selected {% endif %}>Bloqueado</option>
+		</select>
+		<input type="text" name="busqueda" class="form-control"  placeholder="Buscar usuario" {% if busqueda %} value={{busqueda}} {% endif %}>
+		<span class="input-group-btn">	        
+		    <button class="btn btn-secondary" type="submit" style="align-self: center; margin-left: 2%;">Buscar</button>
+		</span>
+	</form>
+
+		 {% if busqueda %}
+	 
+	 		<a href="{{path('users_index')}}"><button class="btn btn-secondary">Mostrar todos</button></a>
+
+	 	{% endif %}
+
+</div>
+{% if users == "no hay usuarios"%}
+		<div class="alert alert-warning" style="text-align: center;" role="alert">
+  			{{ users }}
+		</div>
+{% else %}
+{% if resultado %}
+	<div class="alert alert-success" style="text-align:center" role="alert">
+  			{{resultado}}
+	</div>
+{% endif %}
+
+<div class="table-responsive myTable" style="margin-bottom: 10%;">
+	<table class="table">
+		<tr>
+			<th>Nombre</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Estado</th>
+			<th></th>
+			<th></th>
+		</tr>
+		{% for user in users %}
+		<tr>
+			<td>{{ user.name }}</td>
+			<td>{{ user.username }}</td>
+			<td>{{ user.email }}</td>
+			<td><form method="POST" action="{{path('users_toggle')}}">
+				<input type="hidden" name="username" value={{ user.username }} >
+				<button type="submit" {% if user.active %} class="btn btn-danger" onclick="return confirm('¿Esta seguro que desea bloquear este usuario?')" {% else %} class="btn btn-success" onclick="return confirm('¿Esta seguro que desea activar este usuario?')" {% endif %}>{% if user.active %} Bloquear {% else %} Activar {% endif %} </button>
+			</form></td>
+			
+			<td><form method="POST" action="/user/{{ user.username }}">
+				<input type="hidden" name="_method" value='delete' >
+				<button type="submit" class="btn btn-danger" onclick="return confirm('¿Esta seguro que desea borrar este usuario?')">Eliminar</button>
+			</form></td>
+			<td><form method="GET" action="/user/update/{{user.username}}">
+			<button type="submit" class="btn btn-info">Actualizar</button>
+			</form></td>
+		</tr>
+		{% endfor %}
+	{% endif %}
+	</table>
+
+	{% if pags > 0 %}
+	{% for i in 1..pags %}
+	<a href="/user?page={{ i }}&busqueda={{ busqueda }}&activo={{ activo }}">{{ i }}</a>
+	{% endfor %}
+	{% endif %}
+</div>
+{% endblock %}

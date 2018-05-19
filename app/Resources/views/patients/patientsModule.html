@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block section %}
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="./bower_components/highcharts/highcharts.js"></script>
+<script src="./bower_components/highcharts/modules/exporting.js"></script>
+<script src="./view/js/script.js"></script>
+<script src="./view/js/graficosDatosDemograficos.js"></script>
+
+<div class="container" style="margin-top:5%;">
+	<h1 style="text-align:center; margin-bottom: 5%;">Lista de Pacientes</h1>
+	<div class="dropdown" style="display: inline">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			 Ver graficos
+			</button>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{heladera}},'heladera');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con heladera</a></li>
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{vivienda}},'vivienda');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con vivienda</a></li>
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{mascota}},'mascota');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con mascota</a></li>
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{agua}},'agua');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con agua</a></li>
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{calefaccion}},'calefaccion');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con calefaccion</a></li>
+					<li class="dropdown-item"  id="ccm" onclick="graficarDatosDemograficos({{electricidad}},'electricidad');"><a style="text-decoration: none; color:black" href="#graficos">Gráfico de la cantidad de gente con electricidad</a></li>
+			</div>
+	</div>
+
+
+
+		{% if ((not is_granted('ROLE_Administrador')) or (is_granted('ROLE_Pediatra') or is_granted('ROLE_Recepcionista')))   %}
+			<a href="{{path('patients_add')}}" class="btn btn-success" style="float:left">Agregar paciente</a>
+		{% endif %}
+
+
+
+		<form class="form-group align-self-center form-inline" style="float:right;" action="{{path('patients_index')}}" method="GET">
+	      	<input type="text" name="busqueda" class="form-control"  placeholder="Buscar paciente" {% if busqueda %} value={{busqueda}} {% endif %}">
+	     	<span class="input-group-btn">
+	      	<button class="btn btn-secondary" type="submit" style="align-self: center; margin-left: 2%;">Buscar</button>
+	      	</span>
+	 	</form>
+
+		<form class="form-group align-self-center form-inline" style="float:right;" action="{{path('patients_index')}}" method="GET">
+			<select>
+				{% for doc in documentos%}
+					<option name={{doc.id}}> {{doc.name}} </option>
+				{% endfor %}
+			</select>
+	      	<input type="number" name="numero" class="form-control"  placeholder="Nro de documento" {% if numero %}value={{ numero }} {% endif %}">
+	     	<span class="input-group-btn">
+	      	<button class="btn btn-secondary" type="submit" style="align-self: center; margin-left: 2%;">Buscar</button>
+	      	</span>
+	 	</form>
+
+	 	{% if busqueda or numero %}
+
+	 		<a href="{{ path('patients_index') }}"><button class="btn btn-secondary">Mostrar todos</button></a>
+
+	 	{% endif %}
+
+	</div>
+
+</div>
+<br><br>
+{% if resultado %}
+		<div class="alert alert-success" role="alert">
+  			{{ resultado}}
+		</div>
+{% endif %}
+
+	<div class="table-responsive" style="margin-bottom: 10%">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>
+						Nombre
+					</th>
+					<th>
+						Apellido
+					</th>
+					<th>
+						Dni
+					</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody >
+				{% for pacient in patients%}
+					<tr>
+						<td>{{ pacient.name }}</td>
+						<td>{{ pacient.surname }}</td>
+						<td>{{ pacient.dniNumber }}</td>
+						{% if is_granted('ROLE_Administrador') %}
+							<td><form method="POST" action="/patient/{{pacient.dniNumber }}">
+								<input type="hidden" name="_method" value="delete">
+								<input type="submit" class="btn btn-danger" onclick="confirm('Esta seguro que desea eliminar el paciente?')" value="Eliminar">
+							</form></td>
+						{% endif %}
+						<td><a href= "/patient/update/{{ pacient.dniNumber }}">
+							<input type="submit" class="btn btn-info" value="Actualizar">
+						</a></td>
+						<td><a  href="/patient/demographic-data/{{ pacient.dniNumber }}">
+							<input type="submit" class="btn btn-info" value="Datos Demograficos">
+						</a></td>
+						{% if is_granted('ROLE_Administrador') or is_granted('ROLE_Pediatra') %}
+						<td><a href="/patient/health-control/{{ pacient.dniNumber }}">
+							<input type="submit" class="btn btn-info" value="Historia Clinica">	
+						</a></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div style="margin-left:5%">
+		{% for i in 1..pags %}
+			<a href="/patient?page={{i}}">{{ i }}</a>
+		{% endfor %}
+		</div>
+
+	</div>
+
+	<div id="graficos" style="margin-bottom: 20%;">
+	</div>
+
+{% endblock %}

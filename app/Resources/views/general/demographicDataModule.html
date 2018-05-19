@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+
+
+<div class="container" style="margin-top:10%; margin-bottom:20%">
+
+	<h2 style="text-align:center; color:#3e4e68">Datos Demográficos</h2>
+
+	{% if tiene_datos or cargar_datos %}
+	{{ patients_data.id_tipo_vivienda }}
+
+	<hr>
+	<form method="POST" {% if cargar_datos %} action="/patient/demographic-data/{{ paciente }}" {% else %} action="/patient/demographic-data/update/{{ paciente }}" {% endif %} >
+		  <input type="hidden" name="_method" value="PUT">
+		  <input type="hidden" name="dni_paciente" value="{{ paciente }}">
+		  <fieldset>
+		  	<label>Heladera?</label>
+		    <label><input required name="fridge" value=1 type="radio"{% if patients_data['heladera'] %} checked {% endif %}>Si</label>
+		   	<label><input required name="fridge" value=0 type="radio"{% if not patients_data['heladera'] %} checked {% endif %}>No</label>
+		  </fieldset>
+		  <hr>
+		  <fieldset>
+		  	<label>Electricidad?</label>
+		    <label><input required name="electricity" value=1 type="radio"{% if patients_data['electricidad'] %} checked {% endif %}>Si</label>
+		   	<label><input required name="electricity" value=0 type="radio"{% if not patients_data['electricidad'] %} checked {% endif %}>No</label>
+		  </fieldset>
+		  <hr>
+		  <fieldset>
+		  	<label>Mascota?</label>
+		    <label><input required name="pets" value=1 type="radio"{% if patients_data['mascota'] %} checked {% endif %}>Si</label>
+		   	<label><input required name="pets" value=0 type="radio"{% if not patients_data['mascota'] %} checked {% endif %}>No</label>
+		  </fieldset>
+		  <hr>
+		  <div class="form-group">
+			  <label>Tipo de vivienda?</label>
+			  <select required name="home">
+			  		<option {% if not patients_data.tipoVivienda %} selected {%endif%} value="">Seleccione una opcion</option>
+			  		{% for i in referencias.tipoVivienda %}
+	    			<option  {% if patients_data.tipoVivienda == i.id %} selected {%endif%} value="{{i.id}}">{{i.name}}</option>
+	    			{% endfor %}
+			  </select>
+		  </div>
+		  <hr>
+		  <div class="form-group">
+			  <label>Tipo de calefaccion</label>
+			  <select required name="heating">
+			  		<option {% if not patients_data.tipoCalefaccion %} selected {%endif%} value="">Seleccione una opcion</option>
+			  		{% for i in referencias.tipoCalefaccion %}
+	    			<option  {% if patients_data.tipoCalefaccion ==i.id %} selected {%endif%} value="{{i.id}}">{{i.name}}</option>
+	    			{% endfor %}
+			  </select>
+		  </div>
+		  <hr>
+		  <div class="form-group">
+			  <label>Tipo de agua?</label>
+			  <select required name="water">
+		  			<option {% if not patients_data.tipoAgua %} selected {%endif%} value="">Seleccione una opcion</option>
+			  		{% for i in referencias.tipoAgua %}
+	    			<option  {% if patients_data.tipoAgua == i.id %} selected {%endif%} value="{{i.id}}">{{i.name}}</option>
+	    			{% endfor %}
+			  </select>
+		  </div>
+		   <hr>
+		  <div class="form-group" style="margin-left:35%;">
+
+		  		<input type="hidden" name="id_datos_demo" value="{{ patients_data['id'] }}">
+		  		<input type="hidden" name="dni" value= {{ paciente }} >
+
+		  		{% if ((not is_granted('ROLE_Administrador')) or (is_granted('ROLE_Administrador') and (is_granted('ROLE_Pediatra') or is_granted('ROLE_Recepcionista')))) %}
+		  			<input type="submit" class="btn btn-primary" value="Actualizar">
+		  		{% endif %}
+		  </div>
+	</form>
+	<a  href="index.php?action=patients_index"  style="float: left; margin-right: 4%;"  class="btn btn-info" >Volver</a>
+	{% if is_granted('ROLE_Administrador') and not cargar_datos%}
+
+		<form method="post" action="/patient/demographic-data/{{ patient_data['id'] }}">
+			<input type="hidden" name="_method" value='delete'>
+			<input type="hidden"  name="id_datos" value= {{ patients_data['id'] }} >
+			<input type="hidden"  name="dni" value= {{ paciente }}>
+			<input type="submit" onclick="return confirm('Seguro que deseas eliminar los datos?');" class="btn btn-info" value="Eliminar Datos">
+		</form>
+
+	{% endif %}
+
+	{% else %}
+		<div class="alert alert-danger" role="alert">
+  			El usuario no tiene datos demograficos cargados.
+		</div>
+
+		{% if ((not is_granted('ROLE_Administrador')) or (is_granted('ROLE_Pediatra') or is_granted('ROLE_Recepcionista'))) %}
+
+			<form method="POST" action="/patient/demographic-data/add">
+				<input type="hidden" name="dni" value= {{ paciente }} >
+				<input type="submit" class="btn btn-info" value="Agregar datos demograficos">
+			</form>
+
+		{% endif %}
+
+	{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        our_db_provider:
+            entity:
+                class: AppBundle\Entity\User
+                property: username
+
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: md5
+            encode_as_base64: false
+            iterations: 0
+
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            provider: our_db_provider
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login: 
+                login_path: login
+                check_path: login
+                default_target_path: home_index
+            logout:
+                path: logout
+                target: home_index
+    #Acá se definen los permisos para los roles, siempre los roles deben empezar con ROL_
+    #Hay que tener cuidado con el macheo de rutas, ej: cuando se define el path ^/user, ahi se matcheará con todas las rutas que comiencen con /user 
+    access_control:
+        # require ROLE_Administrador         
+        - { path: ^/user, roles: ROLE_Administrador }
+
+        #Permisos para el módulo de historia clínica
+        - { path: ^/patient/health-control, roles: ROLE_Administrador, methods: [DELETE] }
+        - { path: ^/patient/health-control/add, roles: ROLE_Pediatra }
+        - { path: ^/patient/health-control, roles: ROLE_Pediatra, methods: [POST] }
+        - { path: ^/patient/health-control, roles: ROLE_Pediatra, methods: [PUT] }
+        - { path: ^/patient/health-control, roles: [ROLE_Administrador, ROLE_Pediatra]}
+
+
+        #Permisos para el módulo pacientes
+        - { path: ^/patient, roles: ROLE_Administrador,  methods: [DELETE] }
+        - { path: ^/patient/add, roles: [ROLE_Recepcionista, ROLE_Pediatra]  }
+        - { path: ^/patient, roles: [ROLE_Recepcionista, ROLE_Pediatra], methods: [POST] }
+        - { path: ^/patient/update, roles: [ROLE_Administrador, ROLE_Recepcionista, ROLE_Pediatra] }
+        - { path: ^/patient, roles: [ROLE_Administrador, ROLE_Recepcionista, ROLE_Pediatra], methods: [PUT] }
+        - { path: ^/patient, roles: [ROLE_Administrador, ROLE_Recepcionista, ROLE_Pediatra] }
+        
+        #Permisos para el módulo de datos demográficos
+        - { path: ^/demographic-data, roles: [ROLE_Administrador, ROLE_Recepcionista, ROLE_Pediatra], methods: [DELETE]}
+        - { path: ^/demographic-data/add, roles:  [ROLE_Recepcionista, ROLE_Pediatra]}
+        - { path: ^/demographic-data, roles: [ROLE_Recepcionista, ROLE_Pediatra], methods: [POST] }
+        - { path: ^/demographic-data, roles: [ROLE_Recepcionista, ROLE_Pediatra], methods: [PUT] }
+        - { path: ^/demographic-data, roles: [ROLE_Administrador, ROLE_Recepcionista, ROLE_Pediatra], methods:[GET]}
+        
+        #Permisos para el módulo de configuración
+        - { path: ^/config, roles: ROLE_Administrador, methods: [PUT]}
+        - { path: ^/config, roles: ROLE_Administrador }
+

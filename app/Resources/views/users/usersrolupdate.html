@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+
+<div class="container" style="margin-top:10%; margin-bottom:20%">
+
+	<h2 style="text-align:center; color:#3e4e68">Cambiar roles</h2>
+	<hr>
+	  <h3>Roles actuales:</h3>
+	  <table class="table-responsive">
+		  <tr>
+		  	<th>Rol</th>
+		  	<th></th>
+		  </tr>
+		  {% for user_role in user_roles %}
+		  <tr>
+		  	<td>{{ user_role}}</td>
+		  	<td><form method="POST" action="/user/rol/{{username}}">
+					<input type="hidden" name="_method" value="delete" >
+					<input type="hidden" name="role" value={{ user_role}}>
+					<button style="margin-left:100%" type="submit" class="btn btn-danger">Eliminar</button>
+			</form></td>
+		  </tr>
+		  {% endfor %}
+		</table>
+		  <hr>
+		<h3>Roles disponibles:</h3>
+
+	<table class="table-responsive" >
+		<tr>
+		  	<th>Rol</th>
+		  	<th></th>
+		</tr>
+		{% for role in roles %}
+		  <tr>
+		  	<td>{{ role.name }}</td>
+		  	<td><form method="POST" action=" /user/rol/{{username}}">
+					<input type="hidden" name="role" value={{ role.name }}>
+					<button style="margin-left:100%" type="submit" class="btn btn-success">Agregar</button>
+				</form></td>
+		  </tr>
+		{% endfor %}
+	  </table>
+</div>
+
+{% endblock %}

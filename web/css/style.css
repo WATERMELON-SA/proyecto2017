@@ -1,0 +1,267 @@
+ol {
+	list-style: none;
+	font: 15px 'trebuchet MS', 'lucida sans';
+}
+
+ol {
+    counter-reset: li; /* Initiate a counter */
+    list-style: none; /* Remove default numbering */
+    *list-style: decimal; /* Keep using default numbering for IE6/7 */
+    font: 15px 'trebuchet MS', 'lucida sans';
+    padding: 0;
+    margin-bottom: 4em;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+ol ol {
+    margin: 0 0 0 2em; /* Add some left margin for inner lists */
+}
+
+.rectangle-list a{
+    position: relative;
+    display: block;
+    padding: .4em .4em .4em .8em;
+    *padding: .4em;
+    margin: .5em 0 .5em 2.5em;
+    background: #ddd;
+    color: #444;
+    text-decoration: none;
+    transition: all .3s ease-out;   
+}
+
+.rectangle-list a:hover{
+    background: #eee;
+}   
+
+.rectangle-list a:before{
+    content: counter(li);
+    counter-increment: li;
+    position: absolute; 
+    left: -2.5em;
+    top: 50%;
+    margin-top: -1em;
+    background: #b7d7f1;
+    height: 2em;
+    width: 2em;
+    line-height: 2em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.rectangle-list a:after{
+    position: absolute; 
+    content: '';
+    border: .5em solid transparent;
+    left: -1em;
+    top: 50%;
+    margin-top: -.5em;
+    transition: all .3s ease-out;               
+}
+
+.rectangle-list a:hover:after{
+    left: -.5em;
+    border-left-color: #b7d7f1;             
+}  
+
+.active a{
+	background-color: #90abd0;
+} 
+
+#chart{
+	padding-top: 50px;
+	margin: 0 auto;
+	width: 100%;
+} 
+
+html{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; 
+
+}
+
+
+.footeriana{
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: 10%;
+    padding:1%;
+    border-top: solid lightseagreen 2px;
+
+}
+
+@media screen and (max-width: 720px) and (max-height: 500px){
+    .footeriana{
+        position: relative;
+        margin-top: 10%;
+    }
+
+}
+
+.seccion1{
+    font-family: 'Roboto';
+    position: relative;
+    display: table;
+    width: 100%;
+    height: 500px;
+    background: url(../images/section2.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.seccion2{
+    position: relative;
+    display: table;
+    width: 100%;
+    height: 500px;
+    background: url() no-repeat center center scroll;
+    background-color:#ffffff;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.seccion3{
+    position: relative;
+    display: table;
+    width: 100%;
+    height: 500px;
+    background: url(../images/section3.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.myCont{
+    margin-top:10%;
+    margin-bottom:10%;
+    height:100%;
+    background-color:rgba(255,255,255,0.6);
+    box-shadow: 1px black;
+    border-radius:5px;
+}
+
+.paragraph{
+    padding-top:50px;
+    color:#3e4e68
+}
+
+.section{
+    text-align: center;
+    margin-top: 8%;
+}
+
+.article{
+    margin-right: 2%;
+    text-align: center;
+    width: 25%; 
+    height: 100%;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+    padding-bottom: 2%;
+    display: inline-block;
+    font-family: "Roboto";
+    font-weight: lighter;
+    background-color: white;
+    border: solid 0.5px lightseagreen;
+    border-radius: 3%;
+
+} 
+
+.article p {
+    text-align: center;
+}
+
+.article h1 {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 175%;
+    
+}
+
+.myButton{
+    border: solid 3px; 
+    border-color: lightseagreen;
+    height: 65px;
+    width: 130px;
+    border-radius: 5%;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 720px) {
+  .article{
+    width: 90%;
+    background-color: white;
+    border-radius: 0%;
+    border:none;    
+    border-bottom: solid 0.5px lightseagreen;
+    margin-top: 3%; 
+  }
+  .section{
+    margin-top: 2%;
+  }
+}
+
+.right{
+    float: right;
+    margin-right: 3%;
+}
+
+.carrouselImage{
+    width: 600px;
+    height: 400px;
+    margin-left: 27%
+}
+
+.infoHospital{
+    background-color: #7FFFD4;
+    margin-top: -2%;  
+    padding-top: 3%;
+    height: 100vh;
+
+}
+
+.contactoHospital{
+    margin-top: 5%;
+    font-size: 25px;
+    text-align:center;
+}
+
+@media screen and (max-width: 720px) {
+  .infoHospital{
+    margin-top: -3%;
+
+  }
+
+  .carrouselImage{
+    height: 200px;
+    width: 300px;
+    margin-left: 0;
+  }
+
+  .contactoHospital{
+    margin-top: 5%;
+    font-size: 15px;
+    text-align:center;
+}
+}
+
+.myTable{
+    margin-top:10%;
+    margin-left:10%;
+    margin-right:10%;
+}
+.options{
+    margin-top:5%;
+    text-align: center;
+}
+
+.userAddlabel{
+    color:#3e4e68;
+}

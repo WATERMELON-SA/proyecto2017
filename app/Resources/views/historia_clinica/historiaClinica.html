@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+{%block head%}
+		<link rel="stylesheet" type="text/css" href="./view/css/style.css" >
+		<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="./bower_components/highcharts/highcharts.js"></script>
+		<script src="./bower_components/highcharts/modules/exporting.js"></script>
+		<script src="./view/js/script.js"></script>
+		<script src="./view/js/charts.js"></script>
+{%endblock%}
+{% block section %}
+<style type="text/css">
+	.title{
+		color:#3e4e68;
+	}
+	.cont{
+		margin-left:20%;
+		margin-top: 5%;
+		width: 60%;
+	}
+	.small{
+		width:50%;
+		background-color:#3e4e68;
+	}
+	.opt:hover{
+		color: lightgrey;
+		cursor: pointer;
+	}
+	.back{
+		font-size: 0.8cm;
+	}
+
+</style>
+<div class="jumbotron cont" style="text-align: center">
+	<h1 class="title">Controles de salud para el paciente: {{ patient.nombre }} {{ patient.apellido }} </h1>
+	<hr class="small">
+	{% if controles %}
+		{% for i in controles %}
+			<h3 class="opt"><a href="index.php?action=controlSalud_view&id={{i.id_control_salud }}">{{i.id_control_salud}} - Fecha {{i.fecha}}</a></h3>
+			<form method="POST" action="index.php?action=controlSalud_destroy">
+								<input type="hidden" name="id" value={{ i.id_control_salud }} >
+								<input type="hidden" name="dni" value={{ patient.numero }}>
+								{% if is_granted('ROLE_Administrador') %}
+								<input type="submit" class="btn btn-danger" value="Eliminar">
+								{% endif %}
+			<hr class="small">
+		{% endfor %}
+	{% else %}
+			<h3 class="title">No hay controles de salud registrados para este paciente.</h3>
+	{% endif %}
+			{% if is_granted('ROLE_Pediatra') %}
+			<a href="index.php?action=controlSalud_add&dni={{ patient.numero }}" class="btn btn-success">Agregar control</a>
+			{% endif %}
+			{% if controles%}
+			<div class="dropdown" style="display: inline">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				   Ver graficos
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+				   	{% if not hombre%}
+				   		<li class="dropdown-item"  id="ccm" onclick="ccm({{patient_cc}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución del peso mujeres hasta 13 semanas</a></li>
+				   		<li class="dropdown-item" id="ctm" onclick="ctm({{patient_ct}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución de la talla mujeres hasta 2 años</a></li>
+						<li id="cpcm" onclick="cpcm({{patient_cpc}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución del PPC mujeres hasta 13 semanas</a></li>
+					{% else %}
+					 	<li class="dropdown-item" id="cch" onclick="cch({{patient_cc}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución del peso hombres hasta 13 semanas</a></li>
+					 	<li class="dropdown-item" id="cth" onclick="cth({{patient_ct}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución de la talla hombres hasta 2 años</a></li>
+						<li class="dropdown-item" id="cpch" onclick="cpch({{patient_cpc}});"><a style="text-decoration: none; color:black" href="#chart">Gráfico de la evolución del PPC hombres hasta 13 semanas</a></li>
+					{% endif %}
+				  </div>
+			</div>
+			{% endif %}
+			<br>
+			<a class="opt back" href="index.php?action=patients_index">Volver atras</a>
+</div>
+
+
+		<div id="chart" style="margin-bottom: 5%">
+		</div>
+{% endblock %}

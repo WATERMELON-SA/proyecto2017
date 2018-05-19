@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+
+	{% if update=="cambios" %}
+
+		<div class="alert alert-success" role="alert">
+  			Los datos han sido actualizados con exito
+		</div>
+
+	{% elseif update=="no cambios" %}
+
+		<div class="alert alert-danger" role="alert">
+  			Los datos no han sido modificados
+		</div>
+
+	{% endif %}
+	<div class="container">
+		<form method="POST" action="{{ path('configuration_update') }}">
+			<input type="hidden" name="_method" value="put">
+			<div class="form-group">
+			    <label class="form-control-label" > Titulo del Hospital</label>
+			    <input type="text" class="form-control" name="titulo" placeholder="{{sitio.getTitulo()}}" value="{{sitio.getTitulo()}}">
+			</div>
+			<div class="form-group">
+			    <label class="form-control-label">Descripcion del Hospital</label>
+			    <textarea class="form-control" name="descripcion" rows="3" placeholder="{{sitio.getDescripcion()}}">{{sitio.getDescripcion()}}</textarea>
+			</div>
+			<div class="form-group">
+				    <label class="form-control-label">Email de contacto</label>
+				    <input type="text" class="form-control" name="email" value="{{sitio.getEmail()}}" placeholder="{{sitio.getEmail()}}">
+			</div>
+			<div class="form-group">
+				    <label class="form-control-label">Elementos que se visualizan por pagina</label>
+				    <input type="number" class="form-control" name="elementos_pagina" value="{{sitio.getElementosPagina()}}" placeholder="{{sitio.getElementosPagina()}}">
+			</div>
+			<div class="row">
+				<div class="col">
+					<label class="form-check-label">
+					    <input class="form-check-input" type="radio" name="sitio_habilitado" value=1 
+						    {% if sitio.getSitioHabilitado() %} checked {% endif %}>
+						    Sitio habilitado
+					</label>
+				</div>
+				<div class="col">
+						<label class="form-check-label">
+						    <input class="form-check-input" type="radio" name="sitio_habilitado" value=0{% if not sitio.getSitioHabilitado() %} checked {% endif %}>
+						    Sitio deshabilitado
+						</label>
+				</div>
+			</div>
+			<div style="text-align: center;" class="col-auto">
+				<input type="submit" value="Aceptar" class="btn btn-primary">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

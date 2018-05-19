@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+<div class="container" style="margin-top:10%; margin-bottom:20%">
+
+	<h2 style="text-align:center; color:#3e4e68">Agregar usuario</h2>
+	{% if complete == true %}
+		<h3 style="text-align:center; color:red">Por favor complete todos los campos.<h3>
+	{% endif %}
+	{% if existe %}
+		<h3 style="text-align:center; color:red">Ya existe una cuenta con ese usuario.<h3>
+	{% endif %}
+	<hr>
+	<form method="POST" action="{{path('users_insert')}}" id="agregarusuario">
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputEmail1">Email:</label>
+	    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+	    <small id="emailHelp" class="form-text text-muted">No compartiremos tu email con nadie.</small>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputUser">Usuario:</label>
+	    <input name="username" type="text" class="form-control" id="exampleInputUser" placeholder="Usuario" required>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputPassword1">Contraseña:</label>
+	    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" required>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputName">Nombre:</label>
+	    <input name="name" type="text" class="form-control" id="exampleInputName" placeholder="Nombre" required>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputLastname">Apellido:</label>
+	    <input name="lastname" type="text" class="form-control" id="exampleInputLastname" placeholder="Apellido" required>
+	  </div>
+	  <hr>
+	  <div class="form-check">
+	  	<label>Seleccione rol/es:</label>
+	  	{% for role in roles %}
+	    <label class="form-check-label userAddlabel">
+	      <input name="{{role.name}}" type="checkbox" class="form-check-input">
+	      {{role.name}}
+	    </label>
+	    {% endfor %}
+	  </div>
+	  <hr>
+	  <div class="form-group" style="margin-left:35%;">
+	  	<input type="submit" class="btn btn-primary" value="Agregar" onclick="return checkForms('agregarusuario')">
+	  </div>
+	</form>
+</div>
+
+{% endblock %}

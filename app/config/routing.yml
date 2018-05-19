@@ -1,0 +1,150 @@
+home_index:
+  path: /
+  defaults: {_controller: AppBundle:Default:index}
+
+#Login Routes
+login:
+  path: /login
+  defaults: {_controller: AppBundle:Login:login}
+logout:
+  path: /logout
+
+#Users Routes
+users_delete:
+  path: /user/{username}
+  defaults: {_controller: AppBundle:Users:destroy}
+  methods: [DELETE]
+users_add:
+  path: /user/add 
+  defaults: {_controller: AppBundle:Users:add}
+users_insert:
+  path: /user
+  defaults: {_controller: AppBundle:Users:insert}
+  methods: [POST]
+users_update_form:
+  path: /user/update/{username}
+  defaults: {_controller: AppBundle:Users:update}
+users_update:
+  path: /user
+  defaults: {_controller: AppBundle:Users:update_query}
+  methods: [PUT]
+users_change_pass:
+  path: /user/change_pass/{username}
+  defaults: {_controller: AppBundle:Users:change_pass_query}
+  methods: [PUT]
+users_change_pass_form:
+  path: /user/change_pass/{username}
+  defaults: {_controller: AppBundle:Users:change_pass}
+users_toggle:
+  path: /user/toggle
+  defaults: {_controller: AppBundle:Users:toggle}
+  methods: [POST]
+users_index:
+  path: /user
+  defaults: {_controller: AppBundle:Users:index}
+
+#User's rol routes
+users_delete_rol:
+  path: /user/rol/{username}
+  defaults: {_controller: AppBundle:Users:delete_rol}
+  methods: [DELETE] 
+users_add_rol:
+  path: /user/rol/{username}
+  defaults: {_controller: AppBundle:Users:add_rol}
+  methods: [POST]
+users_change_rol_form:
+  path: /user/rol/{username}
+  defaults: {_controller: AppBundle:Users:change_rol}
+
+#Patients routes
+patients_index:
+  path: patient
+  defaults: {_controller: AppBundle:Patients:index}
+  methods: [GET]
+patients_delete:
+  path: /patient/{dni}
+  defaults: {_controller: AppBundle:Patients:destroy}
+  methods: [DELETE]
+patients_add:
+  path: /patient/add 
+  defaults: {_controller: AppBundle:Patients:add}
+patients_insert:
+  path: /patient
+  defaults: {_controller: AppBundle:Patients:insert}
+  methods: [POST]
+patients_update_form:
+  path: /patient/update/{dni}
+  defaults: {_controller: AppBundle:Patients:update}
+patients_update:
+  path: /patient
+  defaults: {_controller: AppBundle:Patients:update_query}
+  methods: [PUT]
+
+#Demographic data routes
+demographicData_index:
+  path: /patient/demographic-data/{patient_dni}
+  defaults: {_controller: AppBundle:DemographicData:index}
+  methods: [GET]
+demographicData_delete:
+  path: /patient/demographic-data/{id}
+  defaults: {_controller: AppBundle:DemographicData:destroy}
+  methods: [DELETE]
+demographicData_add:
+  path: /patient/demographic-data/add
+  defaults: {_controller: AppBundle:DemographicData:add}
+  methods: [POST]
+demographicData_insert:
+  path: /patient/demographic-data/{patient_dni}
+  defaults: {_controller: AppBundle:DemographicData:insert}
+  methods: [PUT]
+demographicData_update:
+  path: /patient/demographic-data/update/{patient_dni}
+  defaults: {_controller: AppBundle:DemographicData:update}
+  methods: [PUT]
+
+#Configuration module routes
+configuration_index:
+  path: /config
+  defaults: {_controller: AppBundle:Site:index}
+  methods: [GET]
+configuration_update:
+  path: /config
+  defaults: {_controller: AppBundle:Site:update}
+  methods: [PUT]
+infoHospital:
+  path: /hospital
+  defaults: {_controller: AppBundle:Site:infoHospital}
+
+#Api turns routes
+turns_available:
+  path: /api/turns/{fecha}
+  defaults: {_controller: AppBundle:Api/Turn:index}
+  methods: [GET]
+turns_set:
+  path: /api/turns/{fecha}/{hora}/{dni}
+  defaults: {_controller: AppBundle:Api/Turn:update}
+  methods: [POST]
+
+#Clinic history routes
+healthControl_show:
+  path: /patient/health-control/{patient_id}/{control_id}
+  defaults: {_controller: AppBundle:HealthControl:show}
+healthControl_index:
+  path: /patient/health-control/{patient_id}
+  defaults: {_controller: AppBundle:HealthControl:index}
+healthControl_delete:
+  path: /patient/health-control/{user_id}/{control_id}
+  defaults: {_controller: AppBundle:HealthControl:destroy}
+  methods: [DELETE]
+healthControl_add:
+  path: /patient/health-control/add/{id}
+  defaults: {_controller: AppBundle:HealthControl:add}
+healthControl_insert:
+  path: /patient/health-control/{user_id}
+  defaults: {_controller: AppBundle:HealthControl:insert}
+  methods: [POST]
+healthControl_update:
+  path: /patient/health-control/{user_id}
+  defaults: {_controller: AppBundle:HealthControl:update_query}
+  methods: [PUT]
+

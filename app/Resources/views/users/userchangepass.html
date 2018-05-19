@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+<div class="container" style="margin-top:10%;margin-bottom:20%">
+
+	<h2 style="text-align:center; color:#3e4e68">Cambiar contraseña</h2>
+	{% if error %}
+		<h3 style="text-align:center;color:red;">{{error}}<h3>
+	{% endif %}
+	{% if respuesta %}
+	<h3 style="text-align:center;color:green;">{{respuesta}}<h3>
+	{% endif %}
+
+	<hr>
+	<form method="POST" action="/user/change_pass/{{ username }}">
+		<input type="hidden" name="_method" value="put">
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputPassword1">Nueva contraseña:</label>
+	    <input name="newpass" required type="password" class="form-control" id="exampleInputPassword1" placeholder="Nueva contraseña">
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputPassword2">Repetir nueva contraseña:</label>
+	    <input name="newpassconfirm" required type="password" class="form-control" id="exampleInputPassword2" placeholder="Repetir contraseña">
+	  </div>
+	  <hr>
+	  <div class="form-group" style="margin-left:35%;">
+	  	<input type="submit" class="btn btn-primary" value="Agregar">
+	  </div>
+	</form>
+</div>
+
+{% endblock %}

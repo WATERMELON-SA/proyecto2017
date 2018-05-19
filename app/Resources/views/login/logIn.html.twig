@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+	<form method="POST" {% if not sitio_deshabilitado %} action="{{ path('login') }}" {% else %} action="./index.php?mantenimiento=validation" {% endif %} class="form">
+			
+			<h1>Iniciar sesion</h1>
+
+			<div class="form-div">
+				<label>Usuario</label><br>
+				<input type="text" id="username" name="_username" required maxlength="40" class="inputs" value="{{ last_username }}">
+			</div>
+
+			<div class="form-div">	
+				<label>Contrase&ntilde;a</label><br>
+				<input type="password" id="password" name="_password" required maxlength="40" class="inputs">
+			</div>
+
+			<button>Aceptar</button>
+	
+	</form>
+
+{% if logFail %}
+
+<script type="text/javascript">alert("Comprueba tus datos e intenta nuevamente")</script>
+
+{% endif %}
+
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+{% endblock %}

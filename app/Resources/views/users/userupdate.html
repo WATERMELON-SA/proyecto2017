@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block section %}
+
+
+<div class="container" style="margin-top:10%; margin-bottom:20%">
+
+	<h2 style="text-align:center; color:#3e4e68">Modificar usuario</h2>
+	{% if exists %}
+		<h3 style="text-align:center; color:red">Ya existe una cuenta con ese usuario.<h3>
+	{% endif %}
+	<hr>
+	<form method="POST" action="/user">
+	<input type="hidden" name="_method" value="put">
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputEmail1">Email:</label>
+	    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ usuario.email }}" required>
+	    <small id="emailHelp" class="form-text text-muted">No compartiremos tu email con nadie.</small>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputUser">Usuario:</label>
+	    <input name="username" type="text" class="form-control" id="exampleInputUser" value="{{ usuario.username }}" required>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputName">Nombre:</label>
+	    <input name="name" type="text" class="form-control" id="exampleInputName" value="{{ usuario.name }}" required>
+	  </div>
+	  <hr>
+	  <div class="form-group">
+	    <label class="userAddlabel" for="exampleInputLastname">Apellido:</label>
+	    <input name="lastname" type="text" class="form-control" id="exampleInputLastname" value="{{ usuario.surname }}" required>
+	  </div>
+	    <input name="actual_user" type="hidden" class="form-control" id="exampleInputActualUser" value="{{ usuario.username }}" >
+	  <hr>
+	  <div style="text-align:center;">
+	  	<a href="/user/change_pass/{{usuario.username}}">Cambiar contraseña</a>
+	 	<a href="/user/rol/{{ usuario.username }}" style="margin-left:5%;">Modificar roles</a>
+	  </div>
+	  <hr>
+	  <div class="form-group" style="margin-left:47%;">
+	  	<input type="submit" class="btn btn-primary" value="Actualizar">
+	  </div>
+	</form>
+</div>
+
+{% endblock %}
