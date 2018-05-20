@@ -18,10 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
         ];
-
-        if (in_array($this->getEnvironment(), ['prod'], true)) {
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-        }
+       
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
