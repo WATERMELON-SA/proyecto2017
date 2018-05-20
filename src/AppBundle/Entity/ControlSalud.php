@@ -105,19 +105,17 @@ class ControlSalud
      */
     private $observacionesGenerales;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_paciente", type="integer")
+    /**  
+     * @ORM\ManyToOne(targetEntity="Pacient")
+     * @ORM\JoinColumn(name="id_paciente", referencedColumnName="id_paciente")
      */
-    private $idPaciente;
+    private $paciente;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_usuario", type="integer")
+    /**  
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="id_usuario", referencedColumnName="id_usuario")
      */
-    private $idUsuario;
+    private $usuario;
 
     /**
      * @var bool
@@ -426,51 +424,44 @@ class ControlSalud
     }
 
     /**
-     * Set idPaciente
-     *
-     * @param integer $idPaciente
+     * Set paciente
      *
      * @return ControlSalud
      */
-    public function setIdPaciente($idPaciente)
+    public function setPaciente($paciente)
     {
-        $this->idPaciente = $idPaciente;
+        $this->paciente = $paciente;
 
         return $this;
     }
 
     /**
-     * Get idPaciente
+     * Get paciente
      *
-     * @return int
      */
-    public function getIdPaciente()
+    public function getPaciente()
     {
-        return $this->idPaciente;
+        return $this->paciente;
     }
 
     /**
-     * Set idUsuario
-     *
-     * @param integer $idUsuario
+     * Set usuario
      *
      * @return ControlSalud
      */
-    public function setIdUsuario($idUsuario)
+    public function setUsuario($usuario)
     {
-        $this->idUsuario = $idUsuario;
+        $this->usuario = $usuario;
 
         return $this;
     }
 
     /**
-     * Get idUsuario
-     *
-     * @return int
+     * Get usuario
      */
-    public function getIdUsuario()
+    public function getUsuario()
     {
-        return $this->idUsuario;
+        return $this->usuario;
     }
 
     /**
