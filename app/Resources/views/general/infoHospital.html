@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block section %}
 <div class="container-fluid infoHospital">
-	<h1 style="; margin-bottom: 2%; text-align: center">{{ sitio.getTitulo() }}</h1>
-	<hr>
-	<div style="text-align: justify;">
-	{{ sitio.getDescripcion() }}
+	<h1 style="; margin-bottom: 2%; text-align: center; color:black">{{ sitio.getTitulo() }}</h1>
+	<div style="text-align: center; color:black;">
+		<h4>{{ sitio.getDescripcion() }}</h4>
 	</div>
 
+	<hr style="width:80%;">
+
 	<!-- Carrousel-->
-	<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
+	<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="margin-top:5%">
 		  <div class="carousel-inner" role="listbox" >
 
 		    <div class="carousel-item active" >
@@ -45,9 +46,12 @@
 		  </a>
 	</div>
 	<!-- Fin Carrousel 	-->
+
+
 	<div class="contactoHospital">
-		<i class="fa fa-envelope" aria-hidden="true">{{ sitio.getEmail() }}</i>
+		<i class="fa fa-envelope" aria-hidden="true">Contacto: {{ sitio.getEmail() }}</i>
 	</div>
+
 </div>
 
 {% endblock %}
