@@ -3,7 +3,7 @@
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
+use Doctrine\Bundle\FixturesBundle;
 
 class AppKernel extends Kernel
 {
