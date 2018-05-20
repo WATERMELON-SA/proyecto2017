@@ -39,7 +39,7 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
+        driver:   pdo_pgsql
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -47,7 +47,7 @@ doctrine:
         password: "%database_password%"
         charset:  UTF8
         server_version: '10.3'
-        # url: "%env(DATABASE_URL)%"
+        url: "%env(DATABASE_URL)%"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
