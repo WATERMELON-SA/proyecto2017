@@ -11,7 +11,7 @@ use AppBundle\Entity\Pacient;
 
 
 
-class DemographicDataController extends Controller
+class DemographicDataController extends DefaultController
 {
 
 

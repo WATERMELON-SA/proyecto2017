@@ -6,14 +6,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Site;
+use AppBundle\Controller\MaintenanceController;
 
 
-class DefaultController extends Controller{
+class DefaultController extends Controller implements MaintenanceController{
+
+    // https://symfony.com/doc/3.4/event_dispatcher.html
+    // https://symfony.com/doc/3.4/event_dispatcher/before_after_filters.html
 
     protected $site = FALSE;
 
+    
     // Este metodo permite obtener la instancia del sitio actual (singleton).
-    protected function site_config(){
+    public function site_config(){
         if(!$this->site){
             $this->site = $this->getDoctrine() 
             ->getRepository(Site::class)
@@ -23,7 +28,7 @@ class DefaultController extends Controller{
         return $this->site;
     }
 
-    // Este metodo visualiza la pagina principal del hostital
+    // Este metodo visualiza la pagina principal del hospital
 
     public function indexAction(Request $request){
         return $this-> render(
