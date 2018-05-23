@@ -6,6 +6,7 @@ use AppBundle\Controller\MaintenanceController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class MaintenanceChecker implements EventSubscriberInterface{
 
@@ -21,9 +22,11 @@ class MaintenanceChecker implements EventSubscriberInterface{
             return;
         }
 
-            var_dump($controller[0]->site_config()->getSitioHabilitado());
         if (!$controller[0]->site_config()->getSitioHabilitado()) {
-            return $this->forward('AppBundle:Site:show_maintenance',array());
+            $redirectUrl = '/maintenance';
+             $event->setController(function() use ($redirectUrl) {
+                return new RedirectResponse($redirectUrl);
+             });
         }
     }
 

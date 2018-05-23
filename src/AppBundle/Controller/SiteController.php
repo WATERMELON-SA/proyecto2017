@@ -21,7 +21,7 @@ class SiteController extends DefaultController{
 
 // Este metodo visualiza la pagina de mantenimiento
 
-	public function show_maintenance(){
+	public function showMaintenanceAction(){
 		return $this-> render('general/mantenimiento.html');
 	}
 

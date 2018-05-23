@@ -8,8 +8,6 @@
 
 // IMPORTANTE: php bin/console doctrine:schema:update --force                     
 
-// Julian was here and based his work on the fucking documentation
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
