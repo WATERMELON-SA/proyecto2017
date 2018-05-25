@@ -23,47 +23,52 @@
 		<p class="alert-success"> El control de salud ha sido actualizado correctamente</p>
 	{% endif %}
 	<div>
-		<form {% if control %} action="index.php?action=controlSalud_update" {% else %} action="/patient/health-control/{{patient_dni}}" {% endif %} method="POST">
+		<form {% if control %} action="/patient/health-control/{{patient_dni}}" {% else %} action="/patient/health-control/{{patient_dni}}" {% endif %} method="POST">
+			{% if control %}
+				<input type="hidden" name="_method" value="put">
+				<input type="hidden" name="id" value={{control.id}}>
+			{% endif %}
+
 			<div>
-				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{ control.fecha}} {% endif %}>
+				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{control.fecha|date('Y-m-d')}} {% endif %}>
 			</div>
 			<hr>
 			{% if control %}
 			<div>
-				<label>Edad</label><spam type="number" name="edad"> {{ edad_paciente }}</spam>
+				<label>Edad</label><spam type="number" name="edad"> {{ control.edad }} años</spam>
 			</div>
 			{% endif %}
 			<hr>
 			<div>
-			<label>Peso</label><input  required type="number" step="0.01" name="peso" {% if control %} value={{ paciente.peso}} {% endif %}>
+			<label>Peso</label><input  required type="number" step="0.01" name="peso" {% if control %} value={{ control.peso}} {% endif %}>
 			</div>
 			<hr>
 			<div>
 			<label>Vacunas completas</label>
 				<label for="Si">Si</label>
-				<input type="radio"  value="1"  required {% if control.vacunas_completas %} checked {% endif %}  name="vacunas_completas">
+				<input type="radio"  value="1"  required {% if control.vacunasCompletas %} checked {% endif %}  name="vacunas_completas">
 				<label for="No">No</label>
-				<input type="radio" value="0"  required {% if not control.vacunas_completas %} checked {% endif %}  name="vacunas_completas">
+				<input type="radio" value="0"  required {% if not control.vacunasCompletas %} checked {% endif %}  name="vacunas_completas">
 			</div>
 			<hr>
 			<div>
 			<label>Maduracion acorde</label>
 				<label for="Si">Si</label>
-				<input type="radio"  value="1"  required {% if control.maduracion_acorde %} checked {% endif %}  name="maduracion_acorde">
+				<input type="radio"  value="1"  required {% if control.maduracionAcorde %} checked {% endif %}  name="maduracion_acorde">
 				<label for="No">No</label>
-				<input type="radio" value="0"  required {% if not paciente.maduracion_acorde %} checked {% endif %} name="maduracion_acorde">
+				<input type="radio" value="0"  required {% if not control.maduracionAcorde %} checked {% endif %} name="maduracion_acorde">
 			</div>
 			<hr>
 			<div>
 			<label>Examen fisico normal</label>
 				<label for="Si">Si</label>
-				<input type="radio" value="1"  required {% if control.ex_fisico_normal %} checked {% endif %} name="ex_fisico_normal">
+				<input type="radio" value="1"  required {% if control.exFisicoNormal %} checked {% endif %} name="ex_fisico_normal">
 				<label for="No">No</label>
-				<input type="radio" value="0" required {% if not control.ex_fisico_normal %} checked {% endif %}  name="ex_fisico_normal">
+				<input type="radio" value="0" required {% if not control.exFisicoNormal %} checked {% endif %}  name="ex_fisico_normal">
 			</div>
 			<hr>
 			<div>
-			<label>Examen fisico observaciones</label><input  required type="text" name="ex_fisico_observaciones" {% if control %} value="{{ control.ex_fisico_observaciones}}" {% endif %}>
+			<label>Examen fisico observaciones</label><input  required type="text" name="ex_fisico_observaciones" {% if control %} value="{{ control.exFisicoObservaciones}}" {% endif %}>
 			</div>
 			<hr>
 			<div>
@@ -83,16 +88,18 @@
 			</div>
 			<hr>
 			<div>
-			<label>Observaciones generales</label><input type="textarea" name="observaciones_generales" {% if control %} value={{ control.observaciones_generales}} {% endif %}>
+			<label>Observaciones generales</label><input type="textarea" name="observaciones_generales" {% if control %} value={{ control.observacionesGenerales}} {% endif %}>
 			</div>
 			<hr>
 			{% if control %}
 				<div>
-				<label>Pediatra</label><input type="text" name="pediatra" {% if control %} value={{ control.username}} {% endif %}>
+				<label>Pediatra: </label> <h4 style="display: inline-block;">{{ control.usuario.username}}</h2>
 				</div>
 			{% endif %}
 			<div>
+			{% if is_granted('ROLE_Pediatra') %}
 				<input type="submit" name="boton" {% if control %} value="Actualizar" {% else %} value="Agregar" {% endif %}>
+			{% endif %}
 			</div>
 		</form>
 	</div>	
