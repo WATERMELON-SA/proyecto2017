@@ -23,14 +23,19 @@
 		<p class="alert-success"> El control de salud ha sido actualizado correctamente</p>
 	{% endif %}
 	<div>
-		<form {% if control %} action="index.php?action=controlSalud_update" {% else %} action="/patient/health-control/{{patient_dni}}" {% endif %} method="POST">
+		<form {% if control %} action="/patient/health-control/{{patient_dni}}" {% else %} action="/patient/health-control/{{patient_dni}}" {% endif %} method="POST">
+			{% if control %}
+				<input type="hidden" name="_method" value="put">
+				<input type="hidden" name="id" value={{control.id}}>
+			{% endif %}
+
 			<div>
-				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{ control.id}} {% endif %}>
+				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} {% endif %}>
 			</div>
 			<hr>
 			{% if control %}
 			<div>
-				<label>Edad</label><spam type="number" name="edad"> {{ control.edad }}</spam>
+				<label>Edad</label><spam type="number" name="edad"> {{ control.edad }} años</spam>
 			</div>
 			{% endif %}
 			<hr>
@@ -51,7 +56,7 @@
 				<label for="Si">Si</label>
 				<input type="radio"  value="1"  required {% if control.maduracionAcorde %} checked {% endif %}  name="maduracion_acorde">
 				<label for="No">No</label>
-				<input type="radio" value="0"  required {% if not control.maduracionAcorde %} checked {% endif %} name="maduracionAcorde">
+				<input type="radio" value="0"  required {% if not control.maduracionAcorde %} checked {% endif %} name="maduracion_acorde">
 			</div>
 			<hr>
 			<div>
@@ -88,7 +93,7 @@
 			<hr>
 			{% if control %}
 				<div>
-				<label>Pediatra</label><input type="text" name="pediatra" value={{ control.usuario.username}} >
+				<label>Pediatra: </label> <h4 style="display: inline-block;">{{ control.usuario.username}}</h2>
 				</div>
 			{% endif %}
 			<div>

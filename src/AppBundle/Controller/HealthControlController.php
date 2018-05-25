@@ -69,8 +69,26 @@ class HealthControlController extends DefaultController{
     }
 
      public function updateAction(Request $request){
+        $patient_dni=$request->get('patient_dni');
+        $control_id=$request->get('id');
+        $manager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(ControlSalud::class);
+        $control=$repository->findOneById($control_id);
+        $control->setFecha(new \DateTime($request->get('fecha')));
+        $control->setPeso($request->get('peso'));
+        $control->setVacunasCompletas($request->get('vacunas_completas'));
+        $control->setMaduracionAcorde($request->get('maduracion_acorde'));
+        $control->setExFisicoNormal($request->get('ex_fisico_normal'));
+        $control->setExFisicoObservaciones($request->get('ex_fisico_observaciones'));
+        $control->setPpc($request->get('ppc'));
+        $control->setPc($request->get('pc'));
+        $control->setTalla($request->get('talla'));
+        $control->setAlimentacion($request->get('alimentacion'));
+        $control->setObservacionesGenerales($request->get('observaciones_generales'));
+        $control->setUsuario($this->getUser());
+        $manager->flush();
 
-        return $this->render('historia_clinica/control_salud.html', array());
+        return $this->render('historia_clinica/control_salud.html', array("patient_dni"=>$patient_dni,'control'=>$control,'update'=>true));
     }
 
      public function destroyAction(Request $request){
