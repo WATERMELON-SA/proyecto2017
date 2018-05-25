@@ -11,8 +11,7 @@ use AppBundle\Entity\Pacient;
 
 
 
-class DemographicDataController extends Controller
-{
+class DemographicDataController extends DefaultController implements MaintenanceController{
 
 
     public function indexAction(Request $request){

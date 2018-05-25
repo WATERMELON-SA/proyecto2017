@@ -4,6 +4,10 @@ parameters:
     #parameter_name: value
 
 services:
+
+    AppBundle\EventSubscriber\MaintenanceChecker:
+        tags:
+            - { name: kernel.event_subscriber, event: kernel.exception }
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services

@@ -9,7 +9,7 @@
 	use AppBundle\Entity\ApiReferencia;
 
 
-class PatientsController extends DefaultController{
+class PatientsController extends DefaultController implements MaintenanceController{
 
 // Este metodo se ejecuta cuando se hace un GET a /patient
 	

@@ -19,6 +19,12 @@ class SiteController extends DefaultController{
 		));
 	}
 
+// Este metodo visualiza la pagina de mantenimiento
+
+	public function showMaintenanceAction(){
+		return $this-> render('general/mantenimiento.html');
+	}
+
 // Este metodo se ejecuta cuando se hace un PUT a /config
 
 	public function updateAction(Request $request){

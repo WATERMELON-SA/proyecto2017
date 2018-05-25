@@ -10,7 +10,7 @@
 
 
 
-class UsersController extends DefaultController{
+class UsersController extends DefaultController implements MaintenanceController{
 
 	private function getUsers($busqueda, $activo,$pagactual=1){
 		$repository = $this->getDoctrine()->getRepository(User::class);
