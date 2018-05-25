@@ -30,7 +30,7 @@
 			{% endif %}
 
 			<div>
-				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} {% endif %}>
+				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{control.fecha|date('Y-m-d')}} {% endif %}>
 			</div>
 			<hr>
 			{% if control %}
@@ -97,7 +97,9 @@
 				</div>
 			{% endif %}
 			<div>
+			{% if is_granted('ROLE_Pediatra') %}
 				<input type="submit" name="boton" {% if control %} value="Actualizar" {% else %} value="Agregar" {% endif %}>
+			{% endif %}
 			</div>
 		</form>
 	</div>	
