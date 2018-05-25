@@ -7,11 +7,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Site;
 use AppBundle\Controller\MaintenanceController;
+use Symfony\Component\HttpFoundation\Response;
+
 
 
 class DefaultController extends Controller{
 
     protected $site = FALSE;
+    private $twig;
+
+    public function __construct(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     
     // Este metodo permite obtener la instancia del sitio actual (singleton).
 
@@ -33,4 +42,14 @@ class DefaultController extends Controller{
             array("inicio" => true)
         );
     }
+
+    // Este metodo sobreescribe el metodo render de los controladores para
+    // agregar el sitio a las variables de twig
+
+    public function render($view, array $array = array(), Response $response = null){
+        $array['site'] = $this->site_config();
+
+        return parent::render($view, $array, $response);
+    }
+
 }
