@@ -28,7 +28,9 @@ class HealthControlController extends DefaultController{
         $patient=$patient_repository->findOneByDniNumber($patient_dni);
         $controles=$repository->findByPaciente($patient);
         $controles=array_filter($controles,function($control){return $control->getEliminado()==0;});
-        return $this->render('historia_clinica/historiaClinica.html', array("patient"=>$patient,"controles"=>$controles));
+        $array=array("patient"=>$patient,"controles"=>$controles);
+        $array=array_merge($array,$this->mostrarGraficos($controles,$patient->getGender()));
+        return $this->render('historia_clinica/historiaClinica.html', $array);
     }
 
     public function addAction(Request $request){
@@ -103,38 +105,46 @@ class HealthControlController extends DefaultController{
         return $this->indexAction($request);
     }
 
-    public function mostrarGraficos($dni,$hombre){
-        $controles=$repository->findById_paciente($patient->getId());
-        $controles=array_filter($controles,function($control){return $control->getEliminado()==0;});
+    public function mostrarGraficos($controles,$hombre){
         $pesos= json_encode($this->getPesosAsArray($controles));
         $ppcs= json_encode($this->getPPCAsArray($controles));
         $tallas= json_encode($this->getTallasAsArray($controles));
-        return array('patient_cc' =>$pesos,'patient_ct' => $tallas, 'patient_cpc' => $ppcs, "hombre" => $hombre);        
+        return array('patient_cc' =>$pesos,'patient_ct' => $tallas, 'patient_cpc' => $ppcs, "hombre" => $hombre);
     }
 
-    public function helper($atributo, $controles){
+    public function helperPesos($controles){
         $x= 0;
         $array=array( );
         foreach ($controles as $key) {
-            $array[]=[$x,(int)$key[$atributo]];
+            $array[]=[$x,(int)$key->getPeso()];
+            $x++;
+        }
+        return $array;
+    }
+
+     public function helperPPC($controles){
+        $x= 0;
+        $array=array( );
+        foreach ($controles as $key) {
+            $array[]=[$x,(int)$key->getPpc()];
             $x++;
         }
         return $array;
     }
 
     public function getPesosAsArray($controles){
-        return $this->helper('peso',$controles);
+        return $this->helperPesos($controles);
     }
 
     public function getPPCAsArray($controles){
-        return $this->helper('ppc',$controles);
+        return $this->helperPPC($controles);
     }
 
     public function getTallasAsArray($controles){
         $x= 0;
         $array=array();
         foreach ($controles as $key) {
-            $array[]=[(int)$key['talla'],(int)$key['peso']];
+            $array[]=[(int)$key->getTalla(),(int)$key->getPeso()];
             $x++;
         }
         return $array;
