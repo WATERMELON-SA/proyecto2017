@@ -32,7 +32,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository{
 			$query = 
 				$query
 					->andWhere('user.active= :activo')
-    				->setParameter('activo', true);
+    				->setParameter('activo', $activo);
 		}
 		
 		if ($busqueda != ''){
