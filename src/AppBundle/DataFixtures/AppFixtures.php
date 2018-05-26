@@ -35,7 +35,7 @@ class AppFixtures implements ORMFixtureInterface
             $pacient->setDniNumber($i*100050);
             $pacient->setDeleted(false);
             $pacient->setIdObraSocial(1);
-            $pacient->setIdTipoDoc(1);
+            $pacient->setIdTipoDoc(2);
             
             $manager->persist($pacient);
         }
