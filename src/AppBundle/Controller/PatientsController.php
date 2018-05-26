@@ -55,21 +55,30 @@ class PatientsController extends DefaultController implements MaintenanceControl
 			$patient->setSurname($request->get('lastname'));
 			$patient->setAddress($request->get('address'));
 			$phone= ($request->get('phone'))? $request->get('phone') : null;
-			$patient->setPhone($phone);
+			$patient->setPhone((int) $phone);
 			$patient->setBirthDate(new \DateTime($request->get('birthday')));
 			$patient->setGender($request->get('genre'));
-			$patient->setDniNumber($dni);
+			$patient->setDniNumber((int) $dni);
 			$obra_social= ($request->get('obra_social'))? $request->get('obra_social') : null;
 			$patient->setIdObraSocial($obra_social);
 			$patient->setIdTipoDoc($request->get('dni_type'));
 			$patient->setDeleted(0);
+
+			// Chequea si los campos son validos
+			$validator = $this->get('validator');
+			$errors = $validator->validate($patient);
+			if (count($errors) > 0) {
+				return $this->render('patients/patientadd.html',array('errors'=>$errors));
+
+			}
+			
 			$manager->persist($patient);
 			$manager->flush();
 			$resultado='El paciente fue agregado correctamente';
 		}
 		else{
 			if ($patient->getDeleted()){
-				$patient=setDeleted(0);
+				$patient->setDeleted(0);
 				$manager->flush();
 				$resultado="El paciente ya existia y se reactivo(se mantienen los datos viejos)";
 			}
@@ -99,13 +108,21 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		$patient->setSurname($request->get('lastname'));
 		$patient->setAddress($request->get('address'));
 		$phone= ($request->get('phone'))? $request->get('phone') : null;
-		$patient->setPhone($phone);
+		$patient->setPhone((int) $phone);
 		$patient->setBirthDate(new \DateTime($request->get('birthday')));
 		$patient->setGender($request->get('genre'));
-		$patient->setDniNumber($dni);
+		$patient->setDniNumber((int) $dni);
 		$obra_social= ($request->get('obra_social'))? $request->get('obra_social') : null;
 		$patient->setIdObraSocial($obra_social);
 		$patient->setDeleted(0);
+
+		// Chequea si los campos son validos
+		$validator = $this->get('validator');
+		$errors = $validator->validate($patient);
+		if (count($errors) > 0) {
+			return $this->render('patients/patientadd.html',array('paciente'=>$patient,'errors'=>$errors));
+
+		}
 		$manager->flush();
 
 		$resultado='El paciente fue actualizado';

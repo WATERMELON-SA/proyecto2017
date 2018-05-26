@@ -25,6 +25,7 @@ class DemographicData
      * @var bool
      *
      * @ORM\Column(name="heladera", type="boolean", nullable=true)
+     * @Assert\NotBlank(message = "El campo heladera no puede estar en blanco.")
      */
     private $heladera;
 
@@ -32,6 +33,7 @@ class DemographicData
      * @var bool
      *
      * @ORM\Column(name="electricidad", type="boolean", nullable=true)
+     * @Assert\NotBlank(message = "El campo electricidad no puede estar en blanco.")
      */
     private $electricidad;
 
@@ -39,6 +41,7 @@ class DemographicData
      * @var bool
      *
      * @ORM\Column(name="mascota", type="boolean", nullable=true)
+     * @Assert\NotBlank(message = "El campo mascota no puede estar en blanco.")
      */
     private $mascota;
 
@@ -46,6 +49,7 @@ class DemographicData
      * @var int
      *
      * @ORM\Column(name="id_tipo_vivienda", type="integer")
+     * @Assert\NotBlank(message = "El campo tipo de vivienda no puede estar en blanco.")
      */
     private $tipoVivienda;
 
@@ -53,6 +57,7 @@ class DemographicData
      * @var int
      *
      * @ORM\Column(name="id_tipo_calefaccion", type="integer")
+     * @Assert\NotBlank(message = "El campo tipo de calefaccion no puede estar en blanco.")
      */
     private $tipoCalefaccion;
 
@@ -60,6 +65,7 @@ class DemographicData
      * @var int
      *
      * @ORM\Column(name="id_tipo_agua", type="integer")
+     * @Assert\NotBlank(message = "El campo tipo de agua no puede estar en blanco.")
      */
     private $tipoAgua;
 
