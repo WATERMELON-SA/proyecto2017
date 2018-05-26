@@ -61,7 +61,7 @@ class DemographicDataController extends Controller
 
     public function insertAction(Request $request){
         $dni = $request->get('dni_paciente');
-        $patient = $this->getDoctrine()->getRepository(Pacient::class)->getPatientByDni($dni)[0];
+        $patient = $this->getDoctrine()->getRepository(Pacient::class)->findOneByDniNumber($dni);
         $em = $this->getDoctrine()->getManager();
         $datos = new DemographicData();
         $datos->setHeladera($request->get('fridge'));
@@ -102,6 +102,12 @@ class DemographicDataController extends Controller
         $entityManager->flush();
         return $this->redirectToRoute('patients_index');
     }
+}
+
+
+
+   
+
 
     /* public function createAction()
         {
@@ -131,4 +137,3 @@ class DemographicDataController extends Controller
             $otherEntityManager = $doctrine->getManager('other_connection');
         }
     */
-}

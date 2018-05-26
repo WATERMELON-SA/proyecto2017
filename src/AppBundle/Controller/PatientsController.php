@@ -7,6 +7,7 @@
 	use Symfony\Component\HttpFoundation\Request;
 	use AppBundle\Entity\Pacient;
 	use AppBundle\Entity\ApiReferencia;
+	use AppBundle\Entity\DemographicData;
 
 
 class PatientsController extends DefaultController{
@@ -14,6 +15,19 @@ class PatientsController extends DefaultController{
 // Este metodo se ejecuta cuando se hace un GET a /patient
 	
 	public function indexAction(Request $request){
+		$em= $this->getDoctrine()->getManager();
+        $data= $em->getRepository(DemographicData::class)->findAll();
+        $total=sizeof($data);
+		$graphicvalues = $this->getValuesForGraphics();
+		$heladera=$this->buildGraphicHasHasnt($graphicvalues['heladera'],$total);
+		$electricidad=$this->buildGraphicHasHasnt($graphicvalues['electricidad'],$total);
+		$mascota=$this->buildGraphicHasHasnt($graphicvalues['mascota'],$total);
+		/*$id_tipo_vivienda=$this->buildGraphicLotOf($graphicvalues['id_tipo_vivienda'],$total);
+		$id_tipo_calefaccion=$this->buildGraphicLotOf($graphicvalues['id_tipo_calefaccion'],$total);
+		$id_tipo_agua=$this->buildGraphicLotOf($graphicvalues['id_tipo_agua'],$total);*/	
+
+
+
 		$busqueda=$request->get('busqueda');
 		$numero=$request->get('numero');
 		$page=$request->get('page')? $request->get('page') : 1;
@@ -21,7 +35,7 @@ class PatientsController extends DefaultController{
 		$repository = $this->getDoctrine()->getRepository(Pacient::class);
 		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),$busqueda,$numero,$page	);
-		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda));
+		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$heladera,"electricidad"=>$electricidad,"mascota"=>$mascota));
 	}
 
 	public function destroyAction(Request $request){
@@ -123,10 +137,10 @@ class PatientsController extends DefaultController{
 			else return $patients;
 	}
 	
-	private function buildGraphicHasHasnt($array){
-
-			$total=$array[0]+$array[1];
-			$porcentajePosee=($array[1]*100)/$total;
+	private function buildGraphicHasHasnt($array,$total){
+			$posee=$array[1];
+			$noPosee=$total-sizeof($array);
+			$porcentajePosee=($posee*100)/$total;
 			$porcentajeNoPosee=100-$porcentajePosee;
 			$grafico=array(['name'=>'Posee','y'=>$porcentajePosee],['name'=>'No posee','y'=>$porcentajeNoPosee]);
 			return json_encode($grafico);
@@ -150,5 +164,97 @@ class PatientsController extends DefaultController{
 		}
 		return json_encode($arreglo);
 	}
-}
+
+	 public function getValuesForGraphics()
+        {
+            $em= $this->getDoctrine()->getManager();
+            $data= $em->getRepository(DemographicData::class)->findAll();
+            $arreglo=[];
+            $arreglo= array_merge($arreglo,$this->graphicDataHeladera('heladera',$data));
+            $arreglo= array_merge($arreglo,$this->graphicDataElectricidad('electricidad',$data));
+            $arreglo= array_merge($arreglo,$this->graphicDataMascota('mascota',$data));
+            $arreglo= array_merge($arreglo, $this->graphicDataTipoVivienda('id_tipo_vivienda',$data));
+            $arreglo= array_merge($arreglo, $this->graphicDataTipoCalefaccion('id_tipo_calefaccion',$data));
+            $arreglo= array_merge($arreglo, $this->graphicDataTipoAgua('id_tipo_agua',$data));
+            return $arreglo;
+        }
+
+        
+		private function graphicDataHeladera($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getHeladera()])) {
+            		$final_answer[$element->getHeladera()] = $final_answer[$element->getHeladera()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getHeladera()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+
+
+		private function graphicDataElectricidad($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getElectricidad()])) {
+            		$final_answer[$element->getElectricidad()] = $final_answer[$element->getElectricidad()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getElectricidad()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+
+
+		private function graphicDataMascota($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getMascota()])) {
+            		$final_answer[$element->getMascota()] = $final_answer[$element->getMascota()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getMascota()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+
+		private function graphicDataTipoVivienda($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getTipoVivienda()])) {
+            		$final_answer[$element->getTipoVivienda()] = $final_answer[$element->getTipoVivienda()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getTipoVivienda()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+
+		private function graphicDataTipoCalefaccion($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getTipoCalefaccion()])) {
+            		$final_answer[$element->getTipoCalefaccion()] = $final_answer[$element->getTipoCalefaccion()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getTipoCalefaccion()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+
+		private function graphicDataTipoAgua($atribute,$array)
+		{	$final_answer=[];
+			foreach ($array as &$element) {
+				if (isset($final_answer[$element->getTipoAgua()])) {
+            		$final_answer[$element->getTipoAgua()] = $final_answer[$element->getTipoAgua()] + 1;
+        		}
+        		else
+        			$final_answer[$element->getTipoAgua()] = 1;
+        	}
+        	return array($atribute => $final_answer);
+		}
+        
+
+    }
+
 ?>
