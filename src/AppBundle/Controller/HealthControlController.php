@@ -62,6 +62,14 @@ class HealthControlController extends DefaultController{
         $control->setPaciente($patient);
         $control->setEdad(((new \DateTime('today'))->diff($patient->getBirthDate()))->y);
 
+        //Chequea si los campos son validos
+        $validator = $this->get('validator');
+        $errors = $validator->validate($control);
+        if (count($errors) > 0) {
+            return $this->render('historia_clinica/control_salud.html', array('patient_dni'=>$patient_dni,'errors'=>$errors));
+
+        }
+
         $manager->persist($control);
         $manager->flush();
 
@@ -88,6 +96,14 @@ class HealthControlController extends DefaultController{
         $control->setAlimentacion($request->get('alimentacion'));
         $control->setObservacionesGenerales($request->get('observaciones_generales'));
         $control->setUsuario($this->getUser());
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($control);
+        if (count($errors) > 0) {
+            return $this->render('historia_clinica/control_salud.html', array('patient_dni'=>$patient_dni,'errors'=>$errors,'control'=>$control));
+
+        }
+
         $manager->flush();
 
         return $this->render('historia_clinica/control_salud.html', array("patient_dni"=>$patient_dni,'control'=>$control,'update'=>true));

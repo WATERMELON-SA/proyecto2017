@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ControlSalud
@@ -32,6 +33,8 @@ class ControlSalud
      * @var \DateTime
      *
      * @ORM\Column(name="fecha", type="datetime")
+     * @Assert\NotBlank(message = "La fecha no puede estar en blanco")
+     * @Assert\DateTime(message = "Fecha no valida")
      */
     private $fecha;
 
@@ -39,6 +42,10 @@ class ControlSalud
      * @var float
      *
      * @ORM\Column(name="peso", type="float")
+     * @Assert\NotBlank(message = "El peso no puede estar en blanco")
+     * @Assert\Range(
+     *      min = 0,
+     *      minMessage = "El peso no puede ser menor que 0")
      */
     private $peso;
 
@@ -46,6 +53,7 @@ class ControlSalud
      * @var bool
      *
      * @ORM\Column(name="vacunas_completas", type="boolean")
+     * @Assert\NotBlank(message = "El campo vacunas completas no puede estar en blanco")
      */
     private $vacunasCompletas;
 
@@ -53,6 +61,7 @@ class ControlSalud
      * @var bool
      *
      * @ORM\Column(name="maduracion_acorde", type="boolean")
+     * @Assert\NotBlank(message = "El campo maduracion acorde no puede estar en blanco")
      */
     private $maduracionAcorde;
 
@@ -60,6 +69,7 @@ class ControlSalud
      * @var bool
      *
      * @ORM\Column(name="ex_fisico_normal", type="boolean")
+     * @Assert\NotBlank(message = "El campo examen fisico normal no puede estar en blanco")
      */
     private $exFisicoNormal;
 
@@ -67,6 +77,7 @@ class ControlSalud
      * @var string
      *
      * @ORM\Column(name="ex_fisico_observaciones", type="text")
+     * @Assert\NotBlank(message = "El campo examen fisico observaciones no puede estar en blanco")
      */
     private $exFisicoObservaciones;
 
@@ -74,6 +85,9 @@ class ControlSalud
      * @var float
      *
      * @ORM\Column(name="pc", type="float")
+     * @Assert\Range(
+     *      min = 0,
+     *      minMessage = "El pc no puede ser menor que 0")
      */
     private $pc;
 
@@ -81,6 +95,9 @@ class ControlSalud
      * @var float
      *
      * @ORM\Column(name="ppc", type="float")
+     * @Assert\Range(
+     * min = 0,
+     * minMessage = "El ppc no puede ser menor que 0")
      */
     private $ppc;
 
@@ -88,6 +105,9 @@ class ControlSalud
      * @var float
      *
      * @ORM\Column(name="talla", type="float")
+     * @Assert\Range(
+     *      min = 0,
+     *      minMessage = "La talla no puede ser menor que 0")
      */
     private $talla;
 
