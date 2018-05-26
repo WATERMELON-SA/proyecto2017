@@ -13,23 +13,27 @@ class UserRepository extends \Doctrine\ORM\EntityRepository{
 	public function activeUsersNumber(){
 		$query = $this->createQueryBuilder('user')
     		->select('count(user.id)')
-    		->where('user.deleted=0')
-    		->getQuery();
+    		->where('user.deleted = :deleted');
+    	$query = $query ->setParameter(array('deleted' => false))
+    					->getQuery();
 	    return $query->setMaxResults(1)->getOneOrNullResult();
 	}
 
 	public function getUsers($cantPags,$busqueda,$activo,$pagactual=1,$username){
 		$inicio=((int)$pagactual-1)*$cantPags;
 		if (($busqueda!='') or ($activo!='')) {
-			$query = $this->createQueryBuilder('user')
-    		->where("user.active=$activo and user.deleted=0 and user.username!='$username' and (user.username LIKE '%$busqueda%' OR user.name LIKE '%$busqueda%' OR user.surname LIKE '%$busqueda%' OR user.email LIKE '%$busqueda%')")
+			$query = $this->createQueryBuilder('user u')
+    		->where("u.active=:activo and u.deleted= :deleted and u.username!= :username and (u.username LIKE :busqueda OR u.name LIKE :busqueda OR u.surname LIKE :busqueda OR u.email LIKE :busqueda)")
+    		->setParameter(array('activo' => $activo,'deleted' => false,
+    			'username' => $username, 'busqueda' => '%$busqueda%'))
     		->setFirstResult($inicio)
     		->setMaxResults($cantPags)
     		->getQuery();
 		}
 		else{
 			$query = $this->createQueryBuilder('user')
-    		->where("user.deleted=0 and user.username!='$username'")
+    		->where("user.deleted= :deleted and user.username!= :username")
+    		->setParameter(array('deleted' => false,'username' => $username))
     		->setFirstResult($inicio)
     		->setMaxResults($cantPags)
     		->getQuery();
