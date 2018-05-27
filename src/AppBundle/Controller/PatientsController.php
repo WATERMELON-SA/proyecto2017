@@ -7,6 +7,7 @@
 	use Symfony\Component\HttpFoundation\Request;
 	use AppBundle\Entity\Pacient;
 	use AppBundle\Entity\ApiReferencia;
+	use AppBundle\Entity\Referencias;
 	use AppBundle\Entity\DemographicData;
 
 
@@ -22,20 +23,16 @@ class PatientsController extends DefaultController{
 		$heladera=$this->buildGraphicHasHasnt($graphicvalues['heladera'],$total);
 		$electricidad=$this->buildGraphicHasHasnt($graphicvalues['electricidad'],$total);
 		$mascota=$this->buildGraphicHasHasnt($graphicvalues['mascota'],$total);
-		/*$id_tipo_vivienda=$this->buildGraphicLotOf($graphicvalues['id_tipo_vivienda'],$total);
-		$id_tipo_calefaccion=$this->buildGraphicLotOf($graphicvalues['id_tipo_calefaccion'],$total);
-		$id_tipo_agua=$this->buildGraphicLotOf($graphicvalues['id_tipo_agua'],$total);*/	
-
-
-
+		$id_tipo_vivienda=$this->buildGraphicLotOf($graphicvalues['id_tipo_vivienda'],'vivienda');
+		$id_tipo_calefaccion=$this->buildGraphicLotOf($graphicvalues['id_tipo_calefaccion'],'calefaccion');
+		$id_tipo_agua=$this->buildGraphicLotOf($graphicvalues['id_tipo_agua'],'agua');
 		$busqueda=$request->get('busqueda');
 		$numero=$request->get('numero');
 		$page=$request->get('page')? $request->get('page') : 1;
-
 		$repository = $this->getDoctrine()->getRepository(Pacient::class);
 		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),$busqueda,$numero,$page	);
-		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$heladera,"electricidad"=>$electricidad,"mascota"=>$mascota));
+		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$heladera,"electricidad"=>$electricidad,"mascota"=>$mascota,"vivienda"=>$id_tipo_vivienda,"calefaccion"=>$id_tipo_calefaccion,"agua"=>$id_tipo_agua));
 	}
 
 	public function destroyAction(Request $request){
@@ -154,11 +151,11 @@ class PatientsController extends DefaultController{
 		$arreglo = [];
 		foreach ($array as $key => $value) {
 			if ($tipo == 'agua') {
-				$arreglo[] = ['name'=>ReferenciasController::getInstance()->tipoAgua((int)$key)->name(),'y'=>($value*100)/$total];
+				$arreglo[] = ['name'=>Referencias::tipoAgua((int)$key)->name(),'y'=>($value*100)/$total];
 			}elseif ($tipo == 'vivienda') {
-				$arreglo[] = ['name'=>ReferenciasController::getInstance()->tipoVivienda((int)$key)->name(),'y'=>($value*100)/$total];
+				$arreglo[] = ['name'=>Referencias::tipoVivienda((int)$key)->name(),'y'=>($value*100)/$total];
 			}else{
-				$arreglo[] = ['name'=>ReferenciasController::getInstance()->tipoCalefaccion((int)$key)->name(),'y'=>($value*100)/$total];
+				$arreglo[] = ['name'=>Referencias::tipoCalefaccion((int)$key)->name(),'y'=>($value*100)/$total];
 			}
 
 		}
