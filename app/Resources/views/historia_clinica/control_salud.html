@@ -22,6 +22,11 @@
 	{% if update %}
 		<p class="alert-success"> El control de salud ha sido actualizado correctamente</p>
 	{% endif %}
+
+	{% for error in errors %}
+    	<li>{{ error.message }}</li>
+	{% endfor %}
+
 	<div>
 		<form {% if control %} action="/patient/health-control/{{patient_dni}}" {% else %} action="/patient/health-control/{{patient_dni}}" {% endif %} method="POST">
 			{% if control %}
