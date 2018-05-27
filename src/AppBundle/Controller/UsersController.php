@@ -14,7 +14,14 @@ class UsersController extends DefaultController implements MaintenanceController
 
 	private function getUsers($busqueda, $activo,$pagactual=1){
 		$repository = $this->getDoctrine()->getRepository(User::class);
-		$users=$repository->getUsers($this->site_config()->getElementosPagina(),$busqueda,$activo,$pagactual,$this->getUser()->getUsername());
+		
+		$users=$repository->getUsers(
+			$this->site_config()->getElementosPagina(),
+			$busqueda,
+			$activo,
+			$pagactual,
+			$this->getUser()->getUsername()
+		);
 
 		if (!$users)
 				return "no hay usuarios";
@@ -80,7 +87,7 @@ class UsersController extends DefaultController implements MaintenanceController
 			$manager->flush();
 			$resultado="El usuario $username fue agregado";
 			$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));
-			$users=$this->getUsers('','',1);
+			$users=$this->getUsers('','');
 			return $this->render('users/usermodule.html',array('users'=>$users,'resultado'=>$resultado,'pags'=>$pags));
 		}
 		else{
@@ -131,7 +138,7 @@ class UsersController extends DefaultController implements MaintenanceController
 		if ($user->getActive()) $resultado='El usuario fue activado';
 		else  $resultado='El usuario fue bloqueado'; 
 		$pags=ceil(($repository->activeUsersNumber()[1])/($this->site_config()->getElementosPagina()));
-		$users=$this->getUsers($this->site_config()->getElementosPagina(),'','');
+		$users=$this->getUsers('','');
 		return $this->render('users/usermodule.html',array("resultado"=>$resultado,"pags"=>$pags,"users"=>$users));
 	}
 
