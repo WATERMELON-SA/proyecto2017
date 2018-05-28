@@ -83,6 +83,14 @@ class UsersController extends DefaultController implements MaintenanceController
 					array_push($roles,$role);
 			}
 			$user->setRoles($roles);
+
+			// Chequea si los campos son validos
+			$validator = $this->get('validator');
+			$errors = $validator->validate($user);
+			if (count($errors) > 0) {
+				return $this->render('users/useradd.html',array('roles'=>$roles_repository->findAll(),'errors'=>$errors));
+			}
+
 			$manager->persist($user);
 			$manager->flush();
 			$resultado="El usuario $username fue agregado";
@@ -116,6 +124,14 @@ class UsersController extends DefaultController implements MaintenanceController
 			$user->setName($request->get('name'));
 			$user->setSurname($request->get('lastname'));
 			$user->setEmail($request->get('email'));
+
+			// Chequea si los campos son validos
+			$validator = $this->get('validator');
+			$errors = $validator->validate($user);
+			if (count($errors) > 0) {
+				return $this->render('users/userupdate.html',array('usuario'=>$user,'errors'=>$errors));
+			}
+
 			$manager->flush();
 			$resultado='El usuario fue actualizado';
 			$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));

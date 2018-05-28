@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Pacient
@@ -25,6 +27,7 @@ class Pacient
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message = "El nombre no puede estar en blanco.")
      */
     private $name;
 
@@ -32,6 +35,7 @@ class Pacient
      * @var string
      *
      * @ORM\Column(name="apellido", type="string", length=255)
+     * @Assert\NotBlank(message = "El apellido no puede estar en blanco.")
      */
     private $surname;
 
@@ -39,6 +43,7 @@ class Pacient
      * @var string
      *
      * @ORM\Column(name="direccion", type="string", length=255)
+     * @Assert\NotBlank(message = "La direccion no puede estar en blanco.")
      */
     private $address;
 
@@ -46,6 +51,12 @@ class Pacient
      * @var string
      *
      * @ORM\Column(name="tel", type="string", length=255, nullable=true)
+     * @Assert\Type(
+     *     type="integer",
+     *     message="El campo teléfono debe ser numerico."
+     * )
+     * @Assert\Range(
+     *      min = 0 )
      */
     private $phone;
 
@@ -53,6 +64,8 @@ class Pacient
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_nac", type="date")
+     * @Assert\NotBlank(message = "La fecha de nacimiento no puede estar en blanco.")
+     * @Assert\Date(message = "Ingrese una fecha valida de nacimiento.")
      */
     private $birthDate;
 
@@ -60,6 +73,8 @@ class Pacient
      * @var string
      *
      * @ORM\Column(name="genero", type="text")
+     * @Assert\NotBlank(message = "El genero no puede estar en blanco.")
+     * @Assert\Choice(choices={"M","F"}, message="Genero no valido.")
      */
     private $gender;
 
@@ -67,6 +82,13 @@ class Pacient
      * @var int
      *
      * @ORM\Column(name="numero", type="integer", unique=true)
+     * @Assert\NotBlank(message = "El dni no puede estar en blanco.")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="El valor del dni debe ser un numero."
+     * )
+     * @Assert\Range(
+     *      min = 0)
      */
     private $dniNumber;
 

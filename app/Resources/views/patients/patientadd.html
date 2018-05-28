@@ -13,6 +13,9 @@
 	
 {% endif %}
 
+{% for error in errors %}
+    <li>{{ error.message }}</li>
+{% endfor %}
 
 <div class="container" style="margin-top:10%; margin-bottom:20%">
 	<h2 style="text-align:center; color:#3e4e68">{% if not paciente %} Agregar {%else%} Actualizar {%endif%} paciente </h2>
@@ -61,7 +64,6 @@
 	    <label  class="userAddlabel">Fecha de Nacimiento:</label>
 	    <input required name="birthday" type="date"  class="form-control" id="fecha" {% if paciente %} value="{{ paciente.birthDate|date('Y-m-d') }}" {% endif %}>
 	  </div>
-
 	  <hr>
 	  <fieldset>
 	  	<label class="userAddlabel">Genero:</label>
@@ -76,7 +78,7 @@
 	  <hr>
 	   <div class="form-group">
 	    <label  class="userAddlabel">Telefono:</label>
-	    <input  name="phone" type="number" class="form-control" {% if not paciente %} placeholder="Telefonoo" {% else %} value="{{ paciente.phone }}" {% endif %}>
+	    <input  name="phone" type="number" class="form-control" {% if not paciente %} placeholder="Telefono" {% else %} value="{{ paciente.phone }}" {% endif %}>
 	  </div>
 	  <hr>
 	   <div class="form-group">
