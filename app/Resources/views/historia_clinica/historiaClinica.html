@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+{% extends 'base.html.twig' %}
 {%block head%}
 		<link rel="stylesheet" type="text/css" href="./view/css/style.css" >
 		<script src={{ asset('bower_components/jquery/dist/jquery.min.js') }}></script>
@@ -30,25 +30,30 @@
 	}
 
 </style>
+
+{{ patient_cc }}
+
+
+
 <div class="jumbotron cont" style="text-align: center">
-	<h1 class="title">Controles de salud para el paciente: {{ patient.nombre }} {{ patient.apellido }} </h1>
+	<h1 class="title">Controles de salud para el paciente: {{ patient.name }} {{ patient.surname }} </h1>
 	<hr class="small">
 	{% if controles %}
 		{% for i in controles %}
-			<h3 class="opt"><a href="index.php?action=controlSalud_view&id={{i.id_control_salud }}">{{i.id_control_salud}} - Fecha {{i.fecha}}</a></h3>
-			<form method="POST" action="index.php?action=controlSalud_destroy">
-								<input type="hidden" name="id" value={{ i.id_control_salud }} >
-								<input type="hidden" name="dni" value={{ patient.numero }}>
+			<h3 class="opt"><a href="/patient/health-control/{{patient.dniNumber}}/{{i.id}}">{{i.id}} - Fecha {{i.id}}</a></h3>
+			<form method="POST" action="/patient/health-control/{{patient.dniNumber}}/{{ i.id}}">
+								<input type="hidden" name="_method" value='delete' >
 								{% if is_granted('ROLE_Administrador') %}
 								<input type="submit" class="btn btn-danger" value="Eliminar">
 								{% endif %}
+			</form>
 			<hr class="small">
 		{% endfor %}
 	{% else %}
 			<h3 class="title">No hay controles de salud registrados para este paciente.</h3>
 	{% endif %}
 			{% if is_granted('ROLE_Pediatra') %}
-			<a href="index.php?action=controlSalud_add&dni={{ patient.numero }}" class="btn btn-success">Agregar control</a>
+			<a href="/patient/health-control/add/{{ patient.dniNumber }}" class="btn btn-success">Agregar control</a>
 			{% endif %}
 			{% if controles%}
 			<div class="dropdown" style="display: inline">
@@ -70,7 +75,7 @@
 			</div>
 			{% endif %}
 			<br>
-			<a class="opt back" href="index.php?action=patients_index">Volver atras</a>
+			<a class="opt back" href="{{path('patients_index')}}">Volver atras</a>
 </div>
 
 
