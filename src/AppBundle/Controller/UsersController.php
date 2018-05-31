@@ -33,7 +33,7 @@ class UsersController extends DefaultController implements MaintenanceController
 		$activo=$request->get('activo')? $request->get('activo') : '';
 		$page=$request->get('page')? $request->get('page') : 1;
 		$repository = $this->getDoctrine()->getRepository(User::class);
-		$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));
+		$pags=ceil(($repository->activeUsersNumber($busqueda,$activo)[1]-1)/($this->site_config()->getElementosPagina()));
 		$users=$this->getUsers($busqueda,$activo,$page);
 
 		return $this->render('users/usermodule.html',array('users'=>$users,'pags'=>$pags,'busqueda'=>$busqueda,'activo'=>$activo));

@@ -10,13 +10,26 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository{
 
-	public function activeUsersNumber(){
+	public function activeUsersNumber($busqueda='',$activo=''){
 		$query = $this->createQueryBuilder('user')
     		->select('count(user.id)')
     		->where('user.deleted = :deleted')
-    		->setParameter('deleted', false)
-    		->getQuery();
-	    return $query->setMaxResults(1)->getOneOrNullResult();
+    		->setParameter('deleted', false);
+    	if ($activo != ''){
+			$query = 
+				$query
+					->andWhere('user.active= :activo')
+    				->setParameter('activo', $activo);
+		}
+		
+		if ($busqueda != ''){
+			$query = 
+				$query
+					->andWhere('user.username LIKE :busqueda OR user.name LIKE :busqueda OR user.surname LIKE :busqueda OR user.email LIKE :busqueda')	
+		    		->setParameter('busqueda', "%$busqueda%");
+		}
+
+	    return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
 	}
 
 	public function getUsers($cantPags,$busqueda,$activo,$pagactual=1,$username){

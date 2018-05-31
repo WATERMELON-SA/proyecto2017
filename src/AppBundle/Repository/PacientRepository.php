@@ -6,13 +6,27 @@ use Doctrine\ORM\Query;
 
 class PacientRepository extends \Doctrine\ORM\EntityRepository{
 
-	public function activePatientsNumber(){
+	public function activePatientsNumber($busqueda='',$numero=''){
 		$query = $this->createQueryBuilder('patient')
     		->select('count(patient.id)')
     		->where('patient.deleted= :deleted')
-    		->setParameter('deleted', false)
-    		->getQuery();
-	    return $query->setMaxResults(1)->getOneOrNullResult();
+    		->setParameter('deleted', false);
+    	if ($busqueda!='') {
+			$query = 
+				$query
+		    		->andWhere("patient.name LIKE :busqueda OR patient.surname LIKE :busqueda")
+		    		->setParameter('busqueda', "%$busqueda%");
+		}
+		if ($numero!='') {
+			$query = 
+				$query
+				// Falta agregar: and idTipoDoc= :idTipoDoc
+		    		->andWhere("patient.dniNumber= :numero")
+		    		//->setParameter('idTipoDoc', 2)
+		    		->setParameter('numero', (int) $numero);
+		}
+
+	    return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
 	}
 
 	public function getPatients($cantPags,$busqueda,$numero,$pagactual=1){

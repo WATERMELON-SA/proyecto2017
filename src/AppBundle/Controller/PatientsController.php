@@ -30,7 +30,7 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		$numero=$request->get('numero');
 		$page=$request->get('page')? $request->get('page') : 1;
 		$repository = $this->getDoctrine()->getRepository(Pacient::class);
-		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
+		$pags=ceil(($repository->activePatientsNumber($busqueda,$numero)[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),$busqueda,$numero,$page	);
 		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$heladera,"electricidad"=>$electricidad,"mascota"=>$mascota,"vivienda"=>$id_tipo_vivienda,"calefaccion"=>$id_tipo_calefaccion,"agua"=>$id_tipo_agua));
 	}
