@@ -55,7 +55,6 @@
 	    	{% for i in referencias.tipoDocumento %}
 	    		<option  value="{{i.id}}">{{i.name}}</option>
 	    	{% endfor %}
-	    	<option value=1 >DNI</option>
 	    </select>
 	  </div>
 	 <hr>
@@ -88,7 +87,6 @@
 	    	{% for i in referencias.obraSocial %}
 	    		<option  {% if paciente.idObraSocial ==i.id %} selected {%endif%} value="{{i.id}}">{{i.name}}</option>
 	    	{% endfor %}
-	    	<option value=1 {% if paciente.idObraSocial ==1 %} selected {%endif%} >IOMA</option>
 	    </select>
 	  </div>
 	 <hr> 

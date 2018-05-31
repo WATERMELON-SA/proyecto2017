@@ -6,7 +6,6 @@
 	use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 	use Symfony\Component\HttpFoundation\Request;
 	use AppBundle\Entity\Pacient;
-	use AppBundle\Entity\ApiReferencia;
 	use AppBundle\Entity\Referencias;
 	use AppBundle\Entity\DemographicData;
 
@@ -49,10 +48,10 @@ class PatientsController extends DefaultController implements MaintenanceControl
 	}
 
 	public function addAction(Request $request){
-		//$tiposDocumento= ApiReferencia::documentType();
-		//$obraSocial=ApiReferencia::obraSocial();
-		//$referencias=array('tipoDocumento' =>$tiposDocumento,'obraSocial' =>$obraSocial );
-		return $this->render('patients/patientadd.html',array());
+		$tiposDocumento= Referencias::documentType();
+		$obraSocial=Referencias::obraSocial();
+		$referencias=array('tipoDocumento' =>$tiposDocumento,'obraSocial' =>$obraSocial );
+		return $this->render('patients/patientadd.html',array('referencias'=>$referencias));
 	}
 
 	public function insertAction(Request $request){
@@ -106,7 +105,12 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		$repository = $this->getDoctrine()->getRepository(Pacient::class);
 		$patient = $repository->findOneByDniNumber($request->get('dni'));
 		$patient->setBirthDate($patient->getBirthDate()->format('d-m-Y'));
-		return $this->render('patients/patientadd.html',array('paciente'=>$patient));
+
+		$tiposDocumento= Referencias::documentType();
+		$obraSocial=Referencias::obraSocial();
+		$referencias=array('tipoDocumento' =>$tiposDocumento,'obraSocial' =>$obraSocial );
+
+		return $this->render('patients/patientadd.html',array('paciente'=>$patient,'referencias'=>$referencias));
 
 	}
 
