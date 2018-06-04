@@ -30,7 +30,8 @@ class UsersController extends DefaultController implements MaintenanceController
 
 	public function indexAction(Request $request){
 		$busqueda=$request->get('busqueda')? $request->get('busqueda') : '';
-		$activo=$request->get('activo')? $request->get('activo') : '';
+		if ($request->get('activo')!=''){$activo=$request->get('activo');}
+		else{$activo='';} 
 		$page=$request->get('page')? $request->get('page') : 1;
 		$repository = $this->getDoctrine()->getRepository(User::class);
 		$pags=ceil(($repository->activeUsersNumber($busqueda,$activo)[1]-1)/($this->site_config()->getElementosPagina()));
@@ -149,7 +150,12 @@ class UsersController extends DefaultController implements MaintenanceController
 		$manager = $this->getDoctrine()->getManager();
 		$repository = $this->getDoctrine()->getRepository(User::class);
 		$user = $repository->findOneByUsername($username);
-		$user->setActive(!$user->GetActive());
+		if ($user->GetActive()=='0'){
+			$user->setActive(true);
+		}
+		else{
+			$user->setActive(false);
+		}
 		$manager->flush();
 		if ($user->getActive()) $resultado='El usuario fue activado';
 		else  $resultado='El usuario fue bloqueado'; 

@@ -17,7 +17,7 @@
 		</span>
 	</form>
 
-		 {% if busqueda %}
+		 {% if busqueda or activo=='0' or activo=='1' %}
 	 
 	 		<a href="{{path('users_index')}}"><button class="btn btn-secondary">Mostrar todos</button></a>
 
