@@ -75,10 +75,10 @@
 		  		{% endif %}
 		  </div>
 	</form>
-	<a  href="index.php?action=patients_index"  style="float: left; margin-right: 4%;"  class="btn btn-info" >Volver</a>
+	<a  href="{{ path(patient) }}"  style="float: left; margin-right: 4%;"  class="btn btn-info" >Volver</a>
 	{% if is_granted('ROLE_Administrador') and not cargar_datos%}
 
-		<form method="post" action="/patient/demographic-data/{{ patient_data['id'] }}">
+		<form method="post" action="/patient/demographic-data/{{ patients_data['id'] }}">
 			<input type="hidden" name="_method" value='delete'>
 			<input type="hidden"  name="id_datos" value= {{ patients_data['id'] }} >
 			<input type="hidden"  name="dni" value= {{ paciente }}>
