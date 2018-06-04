@@ -16,6 +16,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository{
     		->where('user.deleted = :deleted')
     		->setParameter('deleted', false);
     	if ($activo != ''){
+    		if ($activo=='1'){$activo=true;}
+    		else {$activo=false;}
 			$query = 
 				$query
 					->andWhere('user.active= :activo')

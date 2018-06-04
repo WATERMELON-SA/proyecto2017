@@ -8,6 +8,9 @@
 	{% if exists %}
 		<h3 style="text-align:center; color:red">Ya existe una cuenta con ese usuario.<h3>
 	{% endif %}
+	{% for error in errors %}
+   	 <li>{{ error.message }}</li>
+	{% endfor %}
 	<hr>
 	<form method="POST" action="/user">
 	<input type="hidden" name="_method" value="put">

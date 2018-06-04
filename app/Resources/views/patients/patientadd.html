@@ -61,7 +61,7 @@
 	 {% endif %}
 	  <div class="form-group">
 	    <label  class="userAddlabel">Fecha de Nacimiento:</label>
-	    <input required name="birthday" type="date"  class="form-control" id="fecha" {% if paciente %} value="{{ paciente.birthDate|date('Y-m-d') }}" {% endif %}>
+	    <input required name="birthday" type="date"  class="form-control" id="fecha" {% if paciente %} value="{{ paciente.birthDate|date('Y-m-d') }}" {% endif %}  max="{{'now'|date('Y-m-d')}}">
 	  </div>
 	  <hr>
 	  <fieldset>

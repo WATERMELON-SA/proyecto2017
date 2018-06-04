@@ -35,7 +35,7 @@
 			{% endif %}
 
 			<div>
-				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{control.fecha|date('Y-m-d')}} {% endif %}>
+				<label>Fecha de consulta</label><input  required type="date" name="fecha" {% if control %} value={{control.fecha|date('Y-m-d')}} {% endif %}  max="{{'now'|date('Y-m-d')}}" >
 			</div>
 			<hr>
 			{% if control %}
