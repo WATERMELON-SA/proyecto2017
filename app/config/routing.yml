@@ -1,3 +1,8 @@
+maintenance:
+  path: /maintenance
+  defaults: {_controller: AppBundle:Site:showMaintenance}
+  methods: [GET]
+
 home_index:
   path: /
   defaults: {_controller: AppBundle:Default:index}
@@ -126,25 +131,25 @@ turns_set:
   methods: [POST]
 
 #Clinic history routes
-healthControl_show:
-  path: /patient/health-control/{patient_id}/{control_id}
-  defaults: {_controller: AppBundle:HealthControl:show}
-healthControl_index:
-  path: /patient/health-control/{patient_id}
-  defaults: {_controller: AppBundle:HealthControl:index}
 healthControl_delete:
-  path: /patient/health-control/{user_id}/{control_id}
+  path: /patient/health-control/{patient_dni}/{control_id}
   defaults: {_controller: AppBundle:HealthControl:destroy}
   methods: [DELETE]
 healthControl_add:
-  path: /patient/health-control/add/{id}
+  path: /patient/health-control/add/{patient_dni}
   defaults: {_controller: AppBundle:HealthControl:add}
 healthControl_insert:
-  path: /patient/health-control/{user_id}
+  path: /patient/health-control/{patient_dni}
   defaults: {_controller: AppBundle:HealthControl:insert}
   methods: [POST]
 healthControl_update:
-  path: /patient/health-control/{user_id}
-  defaults: {_controller: AppBundle:HealthControl:update_query}
+  path: /patient/health-control/{patient_dni}
+  defaults: {_controller: AppBundle:HealthControl:update}
   methods: [PUT]
+healthControl_show:
+  path: /patient/health-control/{patient_dni}/{control_id}
+  defaults: {_controller: AppBundle:HealthControl:show}
+healthControl_index:
+  path: /patient/health-control/{patient_dni}
+  defaults: {_controller: AppBundle:HealthControl:index}
 

@@ -147,7 +147,9 @@ class Site
     public function setElementosPagina($elementosPagina)
     {
         if ($this->isUpdateable($elementosPagina, $this->elementosPagina)) {
-            $this->elementosPagina = $elementosPagina;
+            if ($elementosPagina>0){
+                $this->elementosPagina = $elementosPagina;
+            }
         }
         return $this;
     }

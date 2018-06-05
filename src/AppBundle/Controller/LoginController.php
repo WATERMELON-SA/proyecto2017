@@ -1,7 +1,5 @@
 <?php
 
-// checkear para permisos: https://symfony.com/doc/3.4/best_practices/security.html
-
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

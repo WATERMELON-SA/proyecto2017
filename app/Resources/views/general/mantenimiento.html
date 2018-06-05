@@ -22,21 +22,21 @@
 	    <ul class="navbar-nav mr-auto">    
 	    </ul>
 	    <ul class="navbar-nav">
-    	{% if not session %}
+    	{% if app.user is null %}
     		
 	    		<li class="nav-item">
-	        		<a class="nav-link" href="./index.php?mantenimiento=logIn">Log in</a>
+	        		<a class="nav-link" href="{{ path('login') }}">Log in</a>
 	    		</li>
     	
     	{% else %}
     		{% if is_granted('ROLE_Administrador') %}
     		<li class="nav-item">
-    			<a class="nav-link" href="index.php?mantenimiento=site_config">Configuracion</a>
+    			<a class="nav-link" href="{{path('configuration_index')}}">Configuracion</a>
     		</li>
     		{% endif %}
     		
     		<li class="nav-item">
-		       	<a class="nav-link" href="./index.php?mantenimiento=closeSession">Cerrar sesion</a>
+		       	<a class="nav-link" href="{{ path('logout') }}">Cerrar sesion</a>
 		   	</li>
 		
 		{% endif%}
@@ -47,8 +47,9 @@
 </header>
 </head>
 	
-
-	<img style="center" src="./view/mantenimiento.png">
+<div class="embed-responsive embed-responsive-16by9">
+	<img class="embed-responsive-item" src="{{ asset('images/mantenimiento.png')}}">
+</div>
 
 </body>
 </html>

@@ -9,6 +9,11 @@
 	{% if existe %}
 		<h3 style="text-align:center; color:red">Ya existe una cuenta con ese usuario.<h3>
 	{% endif %}
+
+	{% for error in errors %}
+    <li>{{ error.message }}</li>
+	{% endfor %}
+	
 	<hr>
 	<form method="POST" action="{{path('users_insert')}}" id="agregarusuario">
 	  <div class="form-group">

@@ -19,19 +19,19 @@
 			<input type="hidden" name="_method" value="put">
 			<div class="form-group">
 			    <label class="form-control-label" > Titulo del Hospital</label>
-			    <input type="text" class="form-control" name="titulo" placeholder="{{sitio.getTitulo()}}" value="{{sitio.getTitulo()}}">
+			    <input type="text" required class="form-control" name="titulo" placeholder="{{sitio.getTitulo()}}" value="{{sitio.getTitulo()}}">
 			</div>
 			<div class="form-group">
 			    <label class="form-control-label">Descripcion del Hospital</label>
-			    <textarea class="form-control" name="descripcion" rows="3" placeholder="{{sitio.getDescripcion()}}">{{sitio.getDescripcion()}}</textarea>
+			    <textarea class="form-control" required name="descripcion" rows="3" placeholder="{{sitio.getDescripcion()}}">{{sitio.getDescripcion()}}</textarea>
 			</div>
 			<div class="form-group">
 				    <label class="form-control-label">Email de contacto</label>
-				    <input type="text" class="form-control" name="email" value="{{sitio.getEmail()}}" placeholder="{{sitio.getEmail()}}">
+				    <input type="text" required class="form-control" name="email" value="{{sitio.getEmail()}}" placeholder="{{sitio.getEmail()}}">
 			</div>
 			<div class="form-group">
 				    <label class="form-control-label">Elementos que se visualizan por pagina</label>
-				    <input type="number" class="form-control" name="elementos_pagina" value="{{sitio.getElementosPagina()}}" placeholder="{{sitio.getElementosPagina()}}">
+				    <input type="number" required min=1 class="form-control" name="elementos_pagina" value="{{sitio.getElementosPagina()}}" placeholder="{{sitio.getElementosPagina()}}">
 			</div>
 			<div class="row">
 				<div class="col">

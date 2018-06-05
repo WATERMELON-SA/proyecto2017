@@ -4,6 +4,10 @@ parameters:
     #parameter_name: value
 
 services:
+
+    AppBundle\EventSubscriber\MaintenanceChecker:
+        tags:
+            - { name: kernel.event_subscriber, event: kernel.exception }
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
@@ -33,3 +37,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    AppBundle\DataFixtures\:
+        resource: '../../src/AppBundle/DataFixtures'
+        tags: ['doctrine.fixture.orm']

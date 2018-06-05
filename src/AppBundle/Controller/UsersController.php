@@ -10,11 +10,18 @@
 
 
 
-class UsersController extends DefaultController{
+class UsersController extends DefaultController implements MaintenanceController{
 
 	private function getUsers($busqueda, $activo,$pagactual=1){
 		$repository = $this->getDoctrine()->getRepository(User::class);
-		$users=$repository->getUsers($this->site_config()->getElementosPagina(),$busqueda,$activo,$pagactual,$this->getUser()->getUsername());
+		
+		$users=$repository->getUsers(
+			$this->site_config()->getElementosPagina(),
+			$busqueda,
+			$activo,
+			$pagactual,
+			$this->getUser()->getUsername()
+		);
 
 		if (!$users)
 				return "no hay usuarios";
@@ -23,10 +30,11 @@ class UsersController extends DefaultController{
 
 	public function indexAction(Request $request){
 		$busqueda=$request->get('busqueda')? $request->get('busqueda') : '';
-		$activo=$request->get('activo')? $request->get('activo') : '';
+		if ($request->get('activo')!=''){$activo=$request->get('activo');}
+		else{$activo='';} 
 		$page=$request->get('page')? $request->get('page') : 1;
 		$repository = $this->getDoctrine()->getRepository(User::class);
-		$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));
+		$pags=ceil(($repository->activeUsersNumber($busqueda,$activo)[1]-1)/($this->site_config()->getElementosPagina()));
 		$users=$this->getUsers($busqueda,$activo,$page);
 
 		return $this->render('users/usermodule.html',array('users'=>$users,'pags'=>$pags,'busqueda'=>$busqueda,'activo'=>$activo));
@@ -76,11 +84,19 @@ class UsersController extends DefaultController{
 					array_push($roles,$role);
 			}
 			$user->setRoles($roles);
+
+			// Chequea si los campos son validos
+			$validator = $this->get('validator');
+			$errors = $validator->validate($user);
+			if (count($errors) > 0) {
+				return $this->render('users/useradd.html',array('roles'=>$roles_repository->findAll(),'errors'=>$errors));
+			}
+
 			$manager->persist($user);
 			$manager->flush();
 			$resultado="El usuario $username fue agregado";
 			$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));
-			$users=$this->getUsers('','',1);
+			$users=$this->getUsers('','');
 			return $this->render('users/usermodule.html',array('users'=>$users,'resultado'=>$resultado,'pags'=>$pags));
 		}
 		else{
@@ -109,6 +125,14 @@ class UsersController extends DefaultController{
 			$user->setName($request->get('name'));
 			$user->setSurname($request->get('lastname'));
 			$user->setEmail($request->get('email'));
+
+			// Chequea si los campos son validos
+			$validator = $this->get('validator');
+			$errors = $validator->validate($user);
+			if (count($errors) > 0) {
+				return $this->render('users/userupdate.html',array('usuario'=>$user,'errors'=>$errors));
+			}
+
 			$manager->flush();
 			$resultado='El usuario fue actualizado';
 			$pags=ceil(($repository->activeUsersNumber()[1]-1)/($this->site_config()->getElementosPagina()));
@@ -126,12 +150,17 @@ class UsersController extends DefaultController{
 		$manager = $this->getDoctrine()->getManager();
 		$repository = $this->getDoctrine()->getRepository(User::class);
 		$user = $repository->findOneByUsername($username);
-		$user->setActive(!$user->GetActive());
+		if ($user->GetActive()=='0'){
+			$user->setActive(true);
+		}
+		else{
+			$user->setActive(false);
+		}
 		$manager->flush();
 		if ($user->getActive()) $resultado='El usuario fue activado';
 		else  $resultado='El usuario fue bloqueado'; 
 		$pags=ceil(($repository->activeUsersNumber()[1])/($this->site_config()->getElementosPagina()));
-		$users=$this->getUsers($this->site_config()->getElementosPagina(),'','');
+		$users=$this->getUsers('','');
 		return $this->render('users/usermodule.html',array("resultado"=>$resultado,"pags"=>$pags,"users"=>$users));
 	}
 

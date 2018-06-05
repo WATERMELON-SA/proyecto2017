@@ -8,15 +8,13 @@
 
 // IMPORTANTE: php bin/console doctrine:schema:update --force                     
 
-// Julian was here and based his work on the fucking documentation
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use AppBundle\Entity\Role;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -38,6 +36,7 @@ class User implements UserInterface, \Serializable{
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message = "El nombre de usuario no puede estar en blanco.")
      */
     private $username;
 
@@ -45,6 +44,7 @@ class User implements UserInterface, \Serializable{
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank(message = "La contraseña no puede estar en blanco.")
      */
     private $password;
 
@@ -52,6 +52,11 @@ class User implements UserInterface, \Serializable{
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message = "El email no puede estar en blanco.")
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email valido.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
@@ -66,6 +71,7 @@ class User implements UserInterface, \Serializable{
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message = "El nombre no puede estar en blanco.")
      */
     private $name;
 
@@ -73,6 +79,7 @@ class User implements UserInterface, \Serializable{
      * @var string
      *
      * @ORM\Column(name="apellido", type="string", length=255)
+     * @Assert\NotBlank(message = "El apellido no puede estar en blanco.")
      */
     private $surname;
 
