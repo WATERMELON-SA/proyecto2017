@@ -26,7 +26,7 @@ class PacientRepository extends \Doctrine\ORM\EntityRepository{
 		    		->setParameter('numero', (int) $numero);
 		}
 
-	    return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
+	    return $query->orderBy('patient.surname')->getQuery()->setMaxResults(1)->getOneOrNullResult();
 	}
 
 	public function getPatients($cantPags,$busqueda,$numero,$pagactual=1){
@@ -53,7 +53,9 @@ class PacientRepository extends \Doctrine\ORM\EntityRepository{
 		    		->setParameter('numero', (int) $numero);
 		}
 		
-		return $query ->setFirstResult($inicio)
+		return $query 
+		->orderBy('patient.surname')
+		->setFirstResult($inicio)
 		->setMaxResults($elem)
 		->getQuery()
 		->getResult();
