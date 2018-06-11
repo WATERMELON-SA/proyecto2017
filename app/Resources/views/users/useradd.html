@@ -11,7 +11,9 @@
 	{% endif %}
 
 	{% for error in errors %}
-    <li>{{ error.message }}</li>
+    	<div class="alert alert-warning" style="text-align: center;" role="alert">
+    		<li>{{ error.message }}</li>
+    	</div>
 	{% endfor %}
 	
 	<hr>
