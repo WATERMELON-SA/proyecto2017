@@ -20,9 +20,7 @@ class PacientRepository extends \Doctrine\ORM\EntityRepository{
 		if ($numero!='') {
 			$query = 
 				$query
-				// Falta agregar: and idTipoDoc= :idTipoDoc
 		    		->andWhere("patient.dniNumber= :numero")
-		    		//->setParameter('idTipoDoc', 2)
 		    		->setParameter('numero', (int) $numero);
 		}
 
@@ -47,13 +45,13 @@ class PacientRepository extends \Doctrine\ORM\EntityRepository{
 		if ($numero!='') {
 			$query = 
 				$query
-				// Falta agregar: and idTipoDoc= :idTipoDoc
 		    		->andWhere("patient.dniNumber= :numero")
-		    		//->setParameter('idTipoDoc', 2)
 		    		->setParameter('numero', (int) $numero);
 		}
 		
-		return $query ->setFirstResult($inicio)
+		return $query 
+		->orderBy('patient.surname')
+		->setFirstResult($inicio)
 		->setMaxResults($elem)
 		->getQuery()
 		->getResult();
