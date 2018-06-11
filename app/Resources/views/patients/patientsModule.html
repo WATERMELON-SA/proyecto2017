@@ -73,6 +73,9 @@
 						Apellido
 					</th>
 					<th>
+						Tipo documento
+					</th>
+					<th>
 						Nro de documento
 					</th>
 					<th></th>
@@ -86,6 +89,7 @@
 					<tr>
 						<td>{{ pacient.name }}</td>
 						<td>{{ pacient.surname }}</td>
+						<td>{{ pacient.getTipoDoc() }}</td>
 						<td>{{ pacient.dniNumber }}</td>
 						{% if is_granted('ROLE_Administrador') %}
 							<td><form method="POST" action="/patient/{{pacient.dniNumber }}">

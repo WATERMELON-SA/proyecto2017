@@ -13,25 +13,39 @@
 class PatientsController extends DefaultController implements MaintenanceController{
 
 // Este metodo se ejecuta cuando se hace un GET a /patient
-	
-	public function indexAction(Request $request){
+
+	private $heladera =            false;
+	private $electricidad =        false;
+	private $mascota =             false;
+	private $id_tipo_vivienda =    false;
+	private $id_tipo_calefaccion = false;
+	private $id_tipo_agua =        false;
+
+
+	private function graphicvalues(){
 		$em= $this->getDoctrine()->getManager();
         $data= $em->getRepository(DemographicData::class)->findAll();
         $total=sizeof($data);
-		$graphicvalues = $this->getValuesForGraphics();
-		$heladera=$this->buildGraphicHasHasnt($graphicvalues['heladera'],$total);
-		$electricidad=$this->buildGraphicHasHasnt($graphicvalues['electricidad'],$total);
-		$mascota=$this->buildGraphicHasHasnt($graphicvalues['mascota'],$total);
-		$id_tipo_vivienda=$this->buildGraphicLotOf($graphicvalues['id_tipo_vivienda'],'vivienda');
-		$id_tipo_calefaccion=$this->buildGraphicLotOf($graphicvalues['id_tipo_calefaccion'],'calefaccion');
-		$id_tipo_agua=$this->buildGraphicLotOf($graphicvalues['id_tipo_agua'],'agua');
+		$graphicvalues =            $this->getValuesForGraphics();
+		if (!empty($graphicvalues['heladera'])){
+			$this->heladera=            $this->buildGraphicHasHasnt($graphicvalues['heladera'],$total);
+			$this->electricidad=        $this->buildGraphicHasHasnt($graphicvalues['electricidad'],$total);
+			$this->mascota=             $this->buildGraphicHasHasnt($graphicvalues['mascota'],$total);
+			$this->id_tipo_vivienda=    $this->buildGraphicLotOf($graphicvalues['id_tipo_vivienda'],'vivienda');
+			$this->id_tipo_calefaccion= $this->buildGraphicLotOf($graphicvalues['id_tipo_calefaccion'],'calefaccion');
+			$this->id_tipo_agua=        $this->buildGraphicLotOf($graphicvalues['id_tipo_agua'],'agua');
+		}
+	}
+
+	public function indexAction(Request $request){
 		$busqueda=$request->get('busqueda');
 		$numero=$request->get('numero');
 		$page=$request->get('page')? $request->get('page') : 1;
 		$repository = $this->getDoctrine()->getRepository(Pacient::class);
 		$pags=ceil(($repository->activePatientsNumber($busqueda,$numero)[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),$busqueda,$numero,$page	);
-		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$heladera,"electricidad"=>$electricidad,"mascota"=>$mascota,"vivienda"=>$id_tipo_vivienda,"calefaccion"=>$id_tipo_calefaccion,"agua"=>$id_tipo_agua));
+		$this->graphicvalues();		
+		return $this->render('patients/patientsModule.html',array("pags"=>$pags,"patients"=>$patients,"numero"=>$numero,"busqueda"=>$busqueda,"heladera"=>$this->heladera,"electricidad"=>$this->electricidad,"mascota"=>$this->mascota,"vivienda"=>$this->id_tipo_vivienda,"calefaccion"=>$this->id_tipo_calefaccion,"agua"=>$this->id_tipo_agua));
 	}
 
 	public function destroyAction(Request $request){
@@ -44,7 +58,8 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		$resultado='El paciente fue eliminado';
 		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),'','',1);
-		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients));
+		$this->graphicvalues();		
+		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients, "heladera"=>$this->heladera,"electricidad"=>$this->electricidad,"mascota"=>$this->mascota,"vivienda"=>$this->id_tipo_vivienda,"calefaccion"=>$this->id_tipo_calefaccion,"agua"=>$this->id_tipo_agua));
 	}
 
 	public function addAction(Request $request){
@@ -98,7 +113,8 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		}
 		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),'','',1);
-		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients)); 
+		$this->graphicvalues();		
+		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients, "heladera"=>$this->heladera,"electricidad"=>$this->electricidad,"mascota"=>$this->mascota,"vivienda"=>$this->id_tipo_vivienda,"calefaccion"=>$this->id_tipo_calefaccion,"agua"=>$this->id_tipo_agua)); 
 	}
 
 	public function updateAction(Request $request){
@@ -143,7 +159,8 @@ class PatientsController extends DefaultController implements MaintenanceControl
 		$resultado='El paciente fue actualizado';
 		$pags=ceil(($repository->activePatientsNumber()[1])/($this->site_config()->getElementosPagina()));
 		$patients=$this->getPatients($this->site_config()->getElementosPagina(),'','',1);
-		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients)); 
+		$this->graphicvalues();		
+		return $this->render('patients/patientsModule.html',array("resultado"=>$resultado,"pags"=>$pags,"patients"=>$patients, "heladera"=>$this->heladera,"electricidad"=>$this->electricidad,"mascota"=>$this->mascota,"vivienda"=>$this->id_tipo_vivienda,"calefaccion"=>$this->id_tipo_calefaccion,"agua"=>$this->id_tipo_agua)); 
 	}
 
 
@@ -156,7 +173,7 @@ class PatientsController extends DefaultController implements MaintenanceControl
 	}
 	
 	private function buildGraphicHasHasnt($array,$total){
-			$posee=$array[1];
+			$posee=$array[0];
 			$noPosee=$total-sizeof($array);
 			$porcentajePosee=($posee*100)/$total;
 			$porcentajeNoPosee=100-$porcentajePosee;
@@ -271,7 +288,7 @@ class PatientsController extends DefaultController implements MaintenanceControl
         	}
         	return array($atribute => $final_answer);
 		}
-        
+
 
     }
 
