@@ -25,7 +25,9 @@
 {% endif %}
 
 {% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    <div class="alert alert-warning" style="text-align: center;" role="alert">
+		{{ error.messageKey|trans(error.messageData, 'security') }}
+	</div>
 {% endif %}
 
 {% endblock %}
