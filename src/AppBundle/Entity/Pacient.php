@@ -372,6 +372,10 @@ class Pacient
         return $this->idTipoDoc;
     }
 
+    public function getTipoDoc(){
+        return Referencias::documentType($this->getIdTipoDoc())->name();
+    }
+
     public function getDemographic(){
         return $this->demographicData;
     }

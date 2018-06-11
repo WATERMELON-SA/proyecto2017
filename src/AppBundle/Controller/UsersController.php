@@ -100,7 +100,8 @@ class UsersController extends DefaultController implements MaintenanceController
 			return $this->render('users/usermodule.html',array('users'=>$users,'resultado'=>$resultado,'pags'=>$pags));
 		}
 		else{
-			return $this->render('users/useradd.html',array('usuario'=>$user,'exists'=>true));
+			$roles=$roles_repository->findAll();
+			return $this->render('users/useradd.html',array('exists'=>true,'roles'=>$roles));
 
 		}
 	}

@@ -6,12 +6,14 @@
 	{% if complete == true %}
 		<h3 style="text-align:center; color:red">Por favor complete todos los campos.<h3>
 	{% endif %}
-	{% if existe %}
+	{% if exists %}
 		<h3 style="text-align:center; color:red">Ya existe una cuenta con ese usuario.<h3>
 	{% endif %}
 
 	{% for error in errors %}
-    <li>{{ error.message }}</li>
+    	<div class="alert alert-warning" style="text-align: center;" role="alert">
+    		<li>{{ error.message }}</li>
+    	</div>
 	{% endfor %}
 	
 	<hr>
