@@ -126,7 +126,7 @@ turns_available:
   defaults: {_controller: AppBundle:Api/Turn:index}
   methods: [GET]
 turns_set:
-  path: /api/turns/{fecha}/{hora}/{dni}
+  path: /api/turns/{dni}/{fecha}/{hora}
   defaults: {_controller: AppBundle:Api/Turn:update}
   methods: [POST]
 
